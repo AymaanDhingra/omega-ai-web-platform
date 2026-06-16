@@ -1,10 +1,11 @@
 # OMEGA AI Web Platform
 
-Dashboard-first prototype for the autonomous multi-market trading platform spec.
+OMEGA is a provider-independent trading operating system that improves decision context around SignalFlow through accumulated knowledge, market intelligence, analytics, and experience.
 
 ## Recovery Baseline
 
 - [Recovery analysis](docs/RECOVERY_ANALYSIS.md)
+- [OMEGA Architecture](OMEGA_ARCHITECTURE.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Project status](docs/PROJECT_STATUS.md)
 - [Changelog](CHANGELOG.md)
@@ -39,6 +40,7 @@ npm run build
 - Mock paper trading, analytics, and TradingView testing contract models for future backend integration
 - Shared app result states and a mock system event bus in `lib/result.ts` and `lib/events.ts`
 - Feature flags for every frontend module in `lib/feature-flags.ts`
+- Mock-first Decision Intelligence that explains and traces SignalFlow context without making decisions
 - Simulated market watch, portfolio, AI states, system health, trade center, backtesting, paper trading, knowledge uploads, autonomous loops, analytics, TradingView testing placeholders, news intelligence, chat commands, module registry, and admin panels
 - Live trading and broker connections are intentionally locked until API credentials, execution permissions, and risk rules are supplied
 

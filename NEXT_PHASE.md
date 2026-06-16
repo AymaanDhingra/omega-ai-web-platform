@@ -1,8 +1,8 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 7 Complete
+## Current Status: Phase 13 Complete
 
-**Phase**: 7 - Persistence Architecture
+**Phase**: 13 - Governance Foundation + Decision Intelligence
 **Status**: ✅ COMPLETE
 **Date**: 2026-06-16
 
@@ -41,6 +41,14 @@ flowchart LR
     Cache["Cache<T>"]
   end
 ```
+
+## Core Governance
+
+OMEGA operates through a single decision authority. SignalFlow is the sole orchestration and decision system. All other systems contribute observations, context, analytics, knowledge, experience, or explanations.
+
+## Recommended Next Phase
+
+Phase 14 should focus on Context Optimization. It should improve how context is organized, weighted, and delivered to SignalFlow. It must not create a decision engine, execution path, external AI provider dependency, model training system, broker integration, or parallel pipeline.
 
 ## Completed Phases
 

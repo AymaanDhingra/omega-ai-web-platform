@@ -50,6 +50,22 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 - AI accuracy is tracked and improved
 - User feedback is incorporated
 
+## OMEGA Identity
+
+OMEGA is a provider-independent trading operating system that improves decision context around SignalFlow through accumulated knowledge, market intelligence, analytics, and experience.
+
+OMEGA optimizes for explainability before autonomy.
+
+## Single Decision Authority Rule
+
+OMEGA operates through a single decision authority. SignalFlow is the sole orchestration and decision system.
+
+All other platform components contribute observations, context, analytics, knowledge, experience, or explanations. No component outside SignalFlow may independently create an execution path or parallel decision pipeline.
+
+## Context Rule
+
+Knowledge provides context. Market Intelligence provides context. Analytics provides context. Experience provides context. TradingView provides observations. Decision Intelligence explains context. SignalFlow makes decisions.
+
 ## Architecture Layers
 
 ### 1. Domain Layer

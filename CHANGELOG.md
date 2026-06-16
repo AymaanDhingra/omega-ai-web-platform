@@ -2,6 +2,21 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 13 Governance Foundation + Decision Intelligence Complete
+
+### Added
+
+- Added permanent governance principles for OMEGA identity, single decision authority, context rule, and explainability before autonomy.
+- Added Decision Intelligence contracts: DecisionContext, DecisionInsight, DecisionFactor, DecisionConfidence, DecisionExplanation, DecisionSummary, DecisionSnapshot, and DecisionTrace.
+- Added DecisionContextRepository. No DecisionRepository was created.
+- Added mock Decision Intelligence API and SignalFlow context integration helpers.
+- Added decision intelligence feature flags: ENABLE_DECISION_INTELLIGENCE, ENABLE_DECISION_EXPLANATIONS, and ENABLE_DECISION_TRACE.
+- Added Decision Intelligence tests and architecture documentation.
+
+### Verified
+
+- Local verification required: npm install, npm run lint, npm run test, npm run build.
+
 ## 2026-06-16 - Phase 7 Persistence Architecture Complete
 
 ### Added
