@@ -25,6 +25,10 @@ export type FeatureFlagName =
   | "ENABLE_NEWS"
   | "ENABLE_ADMIN"
   | "ENABLE_SETTINGS"
+  // Knowledge Intelligence Layer flags - Phase 9
+  | "ENABLE_KNOWLEDGE_SEARCH"
+  | "ENABLE_KNOWLEDGE_SUMMARY"
+  | "ENABLE_KNOWLEDGE_AI"
   // TradingView flags (optional - OMEGA functions without TradingView)
   | "ENABLE_TRADINGVIEW_CHARTS"
   | "ENABLE_TRADINGVIEW_WATCHLISTS"
@@ -213,6 +217,211 @@ export interface KnowledgeDocument {
   type: "PDF" | "DOCX" | "CSV" | "Excel" | "Rules" | "History";
   status: "Indexed" | "Queued" | "Mock";
   source: string;
+}
+
+// Knowledge Intelligence Layer Types
+export type KnowledgeCategoryType =
+  | "strategy"
+  | "trade-journal"
+  | "market-notes"
+  | "research-notes"
+  | "economic-events"
+  | "ai-learnings"
+  | "paper-trading-results"
+  | "tradingview-observations"
+  | "portfolio-notes"
+  | "risk-rules"
+  | "market-regime"
+  | "signal-analysis";
+
+export interface KnowledgeTag {
+  id: string;
+  name: string;
+  category: KnowledgeCategoryType;
+  weight: number;
+  createdAt: string;
+}
+
+export interface KnowledgeReference {
+  id: string;
+  type: "internal" | "external" | "signal" | "trade" | "market";
+  targetId: string;
+  targetType: string;
+  relationship: "related" | "supports" | "contradicts" | "extends" | "refines";
+  confidence: number;
+  createdAt: string;
+}
+
+export interface KnowledgeState {
+  id: string;
+  status: "active" | "archived" | "deprecated" | "under-review";
+  validFrom: string;
+  validUntil?: string;
+  confidence: number;
+  lastValidated: string;
+  validationSource: string;
+}
+
+export interface KnowledgeSnapshot {
+  id: string;
+  knowledgeItemId: string;
+  timestamp: string;
+  content: string;
+  metadata: Record<string, unknown>;
+  state: KnowledgeState;
+  tags: KnowledgeTag[];
+}
+
+export interface KnowledgeRelationship {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  type: "related" | "supports" | "contradicts" | "extends" | "refines" | "depends-on";
+  strength: number;
+  reasoning: string;
+  createdAt: string;
+}
+
+export interface KnowledgeItem {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  category: KnowledgeCategoryType;
+  source: string;
+  sourceId?: string;
+  tags: KnowledgeTag[];
+  references: KnowledgeReference[];
+  state: KnowledgeState;
+  metadata: {
+    author?: string;
+    market?: string;
+    symbol?: string;
+    timeframe?: string;
+    regime?: string;
+    confidence?: number;
+    [key: string]: unknown;
+  };
+  createdAt: string;
+  updatedAt: string;
+  expiresAt?: string;
+}
+
+export interface KnowledgeCollection {
+  id: string;
+  name: string;
+  description: string;
+  category: KnowledgeCategoryType;
+  items: KnowledgeItem[];
+  relationships: KnowledgeRelationship[];
+  metadata: {
+    market?: string;
+    regime?: string;
+    period?: string;
+    [key: string]: unknown;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface KnowledgeFilter {
+  categories?: KnowledgeCategoryType[];
+  tags?: string[];
+  status?: KnowledgeState["status"][];
+  minConfidence?: number;
+  market?: string;
+  symbol?: string;
+  timeframe?: string;
+  regime?: string;
+  dateRange?: {
+    from: string;
+    to: string;
+  };
+  source?: string;
+}
+
+export interface KnowledgeRanking {
+  itemId: string;
+  score: number;
+  factors: {
+    recency: number;
+    confidence: number;
+    tagRelevance: number;
+    relationshipStrength: number;
+    validationStatus: number;
+  };
+  reasoning: string;
+}
+
+export interface KnowledgeSummary {
+  id: string;
+  itemId: string;
+  summary: string;
+  keyPoints: string[];
+  implications: string[];
+  relatedItems: string[];
+  generatedAt: string;
+  generatedBy: string;
+}
+
+export interface KnowledgeSearchQuery {
+  query: string;
+  filter?: KnowledgeFilter;
+  limit?: number;
+  offset?: number;
+  includeRelationships?: boolean;
+  includeSummaries?: boolean;
+}
+
+export interface KnowledgeSearchResult {
+  items: KnowledgeItem[];
+  rankings: KnowledgeRanking[];
+  totalCount: number;
+  hasMore: boolean;
+  executedAt: string;
+  queryTime: number;
+}
+
+export interface KnowledgeRepository {
+  createItem(item: Omit<KnowledgeItem, "id" | "createdAt" | "updatedAt">): Promise<KnowledgeItem>;
+  getItem(id: string): Promise<KnowledgeItem | null>;
+  updateItem(id: string, updates: Partial<KnowledgeItem>): Promise<KnowledgeItem>;
+  deleteItem(id: string): Promise<void>;
+  listItems(filter?: KnowledgeFilter): Promise<KnowledgeItem[]>;
+  createCollection(collection: Omit<KnowledgeCollection, "id" | "createdAt" | "updatedAt">): Promise<KnowledgeCollection>;
+  getCollection(id: string): Promise<KnowledgeCollection | null>;
+  updateCollection(id: string, updates: Partial<KnowledgeCollection>): Promise<KnowledgeCollection>;
+  deleteCollection(id: string): Promise<void>;
+  listCollections(): Promise<KnowledgeCollection[]>;
+  search(query: KnowledgeSearchQuery): Promise<KnowledgeSearchResult>;
+  filter(filter: KnowledgeFilter): Promise<KnowledgeItem[]>;
+  rank(items: KnowledgeItem[], query: string): Promise<KnowledgeRanking[]>;
+  createRelationship(relationship: Omit<KnowledgeRelationship, "id" | "createdAt">): Promise<KnowledgeRelationship>;
+  getRelationships(itemId: string): Promise<KnowledgeRelationship[]>;
+  deleteRelationship(id: string): Promise<void>;
+  createSnapshot(snapshot: Omit<KnowledgeSnapshot, "id">): Promise<KnowledgeSnapshot>;
+  getSnapshots(itemId: string): Promise<KnowledgeSnapshot[]>;
+  createSummary(summary: Omit<KnowledgeSummary, "id" | "generatedAt">): Promise<KnowledgeSummary>;
+  getSummary(itemId: string): Promise<KnowledgeSummary | null>;
+}
+
+export interface KnowledgeSource {
+  id: string;
+  type: KnowledgeCategoryType;
+  name: string;
+  description: string;
+  enabled: boolean;
+  priority: number;
+  metadata: Record<string, unknown>;
+}
+
+export interface KnowledgeIntegration {
+  id: string;
+  signalId: string;
+  knowledgeItems: KnowledgeItem[];
+  relevanceScore: number;
+  reasoning: string;
+  appliedAt: string;
 }
 
 export interface SystemStatus {

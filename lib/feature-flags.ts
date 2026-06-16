@@ -26,6 +26,11 @@ export const FEATURE_FLAGS: Record<FeatureFlagName, boolean> = {
   ENABLE_ADMIN: true,
   ENABLE_SETTINGS: true,
   
+  // Knowledge Intelligence Layer flags - Phase 9
+  ENABLE_KNOWLEDGE_SEARCH: true,
+  ENABLE_KNOWLEDGE_SUMMARY: true,
+  ENABLE_KNOWLEDGE_AI: true,
+  
   // TradingView flags - OPTIONAL, default to false
   // OMEGA functions completely without TradingView
   ENABLE_TRADINGVIEW_CHARTS: false,
