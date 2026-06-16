@@ -1,8 +1,8 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 7 Complete
+## Current Status: Phase 12 Complete
 
-**Phase**: 7 - Persistence Architecture
+**Phase**: 12 - Advanced Analytics
 **Status**: ✅ COMPLETE
 **Date**: 2026-06-16
 
@@ -41,6 +41,30 @@ flowchart LR
     Cache["Cache<T>"]
   end
 ```
+
+## Core Loop
+
+```text
+Knowledge
+↓
+Market Intelligence
+↓
+AI
+↓
+SignalFlow
+↓
+Paper Trading
+↓
+Analytics
+↓
+Experience
+↓
+Knowledge
+```
+
+## Recommended Next Phase
+
+Phase 13 should focus on AI Reasoning Improvements. It should improve explainability, reasoning traces, and context consumption. It must not add external AI providers, model training, broker APIs, exchange APIs, live execution, or parallel decision systems.
 
 ## Completed Phases
 

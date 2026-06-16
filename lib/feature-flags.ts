@@ -32,6 +32,11 @@ export const FEATURE_FLAGS: Record<FeatureFlagName, boolean> = {
   ENABLE_TRADINGVIEW_WATCHLISTS: false,
   ENABLE_TRADINGVIEW_VALIDATION: false,
   
+  // Advanced Analytics flags - mock enabled
+  ENABLE_ADVANCED_ANALYTICS: true,
+  ENABLE_ANALYTICS_PATTERNS: true,
+  ENABLE_ANALYTICS_INSIGHTS: true,
+  
   // Persistence flags - enabled for Phase 7
   ENABLE_PERSISTENCE: true,
   ENABLE_CACHE: true,
