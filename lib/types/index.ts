@@ -11,6 +11,7 @@ export type ModuleStatus = "active" | "mock" | "planned" | "locked";
 export type SystemHealthState = "Online" | "Offline" | "Mock" | "Locked";
 
 export type FeatureFlagName =
+  // Core module flags
   | "ENABLE_MARKETS"
   | "ENABLE_AI"
   | "ENABLE_KNOWLEDGE"
@@ -23,7 +24,15 @@ export type FeatureFlagName =
   | "ENABLE_CHAT"
   | "ENABLE_NEWS"
   | "ENABLE_ADMIN"
-  | "ENABLE_SETTINGS";
+  | "ENABLE_SETTINGS"
+  // TradingView flags (optional - OMEGA functions without TradingView)
+  | "ENABLE_TRADINGVIEW_CHARTS"
+  | "ENABLE_TRADINGVIEW_WATCHLISTS"
+  | "ENABLE_TRADINGVIEW_VALIDATION"
+  // Persistence flags
+  | "ENABLE_PERSISTENCE"
+  | "ENABLE_CACHE"
+  | "ENABLE_SESSIONS";
 
 export type OmegaIcon =
   | "activity"
