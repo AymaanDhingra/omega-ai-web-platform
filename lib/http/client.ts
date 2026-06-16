@@ -142,9 +142,11 @@ export class FetchHttpClient implements HttpClient {
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          const error: HttpError = new Error(`HTTP ${response.status}`);
-          error.status = response.status;
-          error.retryable = response.status >= 500 || response.status === 429;
+          const retryable = response.status >= 500 || response.status === 429;
+          const error: HttpError = Object.assign(new Error(`HTTP ${response.status}`), {
+            status: response.status,
+            retryable
+          });
           lastError = error;
 
           if (!error.retryable) {
