@@ -4,7 +4,11 @@ Last updated: 2026-06-16
 
 ## Current State
 
-OMEGA AI is a working modular multi-page frontend platform with simulated data, frontend API contracts, an adapter layer, typed backend-facing contracts, mock paper trading contracts, mock TradingView testing contracts, analytics models, reusable result states, and a mock system event bus. It builds, lints, and passes smoke tests successfully. It does not yet have a backend, database, authentication, backend API routes, provider integrations, real TradingView integration, or persistent storage.
+OMEGA AI is at v1.0 Release Candidate status. It is a working modular multi-page frontend and contract platform with simulated data, frontend API contracts, an adapter layer, typed backend-facing contracts, mock persistence architecture, Knowledge Layer, Market Intelligence Layer, SignalFlow integration, mock paper trading contracts, mock TradingView testing contracts, analytics models, reusable result states, and a mock system event bus.
+
+OMEGA v1.0 RC is organized around the core feedback loop: Knowledge → Market Intelligence → AI → SignalFlow → Paper Trading → Analytics → Learning → Knowledge.
+
+It does not yet have a backend, database, authentication, backend API routes, provider integrations, real TradingView integration, live market feeds, broker integrations, exchange integrations, background workers, or real financial transactions.
 
 ## Completed Tasks
 
@@ -50,7 +54,8 @@ OMEGA AI is a working modular multi-page frontend platform with simulated data, 
 - Preserve the modular multi-page frontend and adapter boundary.
 - Use frontend API contracts, adapters, and typed mock services as the contract for future integrations.
 - Keep live trading locked until auth, risk, audit, and broker permissions exist.
-- Prepare Phase 5 around adapter-driven HTTP client readiness without adding production backend behavior.
+- Stabilize OMEGA v1.0 RC before starting new product features.
+- Evaluate future work by whether it strengthens the core feedback loop.
 
 ## Blocked Tasks
 
@@ -78,14 +83,11 @@ OMEGA AI is a working modular multi-page frontend platform with simulated data, 
 
 ## Next Tasks
 
-1. Configure a GitHub remote and authenticated upload path for the initialized local repository.
-2. Add adapter selection controls or configuration that can choose mock versus future HTTP clients.
-3. Add a frontend-only HTTP client shell that conforms to the current backend contracts without calling real services.
-4. Add CI to run install, lint, test, and build.
-5. Add a backend skeleton plan with `/health`, `/status`, and `/modules`, but do not wire it into production runtime yet.
-6. Add a PostgreSQL schema plan and migration tooling decision document.
-7. Add mock AI run history and explainability records behind the current AI contract.
-8. Add persistent paper ledger planning before any live execution work.
+1. Complete v1.0 RC review and merge.
+2. Run local verification: `npm install`, `npm run lint`, `npm run test`, `npm run build`.
+3. Keep CI status documented honestly while runners are unavailable.
+4. Prepare v1.1 AI Reasoning only after v1.0 RC is stable.
+5. Add future features only when they make the OMEGA feedback loop smarter, safer, or more explainable.
 
 ## Verification Log
 

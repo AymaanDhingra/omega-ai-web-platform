@@ -50,6 +50,30 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 - AI accuracy is tracked and improved
 - User feedback is incorporated
 
+## Core Feedback Loop
+
+OMEGA is governed by one core feedback loop:
+
+```text
+Knowledge
+↓
+Market Intelligence
+↓
+AI
+↓
+SignalFlow
+↓
+Paper Trading
+↓
+Analytics
+↓
+Learning
+↓
+Knowledge
+```
+
+Every future feature must strengthen this loop. Disconnected features should be deferred or rejected.
+
 ## Architecture Layers
 
 ### 1. Domain Layer
@@ -97,31 +121,36 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 - Code is maintainable
 - Architecture is clear
 
-## Future Phases
+## Version Roadmap
 
-### Phase 7: Backend Skeleton
-- Create backend API endpoints
-- Implement real data sources
-- Connect HTTP adapters
-- Add authentication
+### v1.0: Core Platform
+- Mock-first frontend and contract platform
+- Knowledge Layer
+- Market Intelligence Layer
+- SignalFlow orchestration
+- Paper Trading validation
+- Analytics feedback
+- TradingView foundation as optional validation context
 
-### Phase 8: Real Data Integration
-- Connect to real market data providers
-- Implement real broker APIs
-- Add real portfolio management
-- Implement real paper trading
+### v1.1: AI Reasoning
+- Explainability records
+- Reasoning trace improvements
+- AI evaluation workflows behind existing contracts
 
-### Phase 9: AI System
-- Implement real AI models
-- Add machine learning
-- Implement prediction engine
-- Add learning system
+### v1.2: Advanced Analytics
+- Better feedback metrics
+- Learning quality tracking
+- Strategy and signal analysis improvements
 
-### Phase 10: Production Ready
-- Performance optimization
-- Security hardening
-- Monitoring and logging
-- Disaster recovery
+### v1.5: Market Data
+- Planned provider-facing market data contracts
+- No live execution by default
+- Mock-first migration path
+
+### v2.0: Autonomous Trading Research
+- Research-only autonomy planning
+- Human approval, audit, safety, and risk controls remain mandatory
+- Autonomous live trading remains prohibited
 
 ## Constraints
 

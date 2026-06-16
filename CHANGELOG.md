@@ -2,6 +2,34 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - OMEGA v1.0 Release Candidate
+
+### Added
+
+- Added `OMEGA_ARCHITECTURE.md` as the permanent concise architecture document for the core feedback loop.
+- Reframed the roadmap from phase-only delivery to versioned releases.
+- Documented OMEGA v1.0 as the Core Platform release candidate.
+
+### Audited
+
+- Knowledge Layer: present as mock-first reasoning foundation.
+- Market Intelligence Layer: present as SignalFlow input, not a parallel pipeline.
+- SignalFlow: remains primary orchestration concept.
+- Paper Trading: remains validation layer with no real financial transactions.
+- TradingView Foundation: remains optional and non-decisional.
+- Persistence: present as mock-first repository/cache/session contracts.
+- Analytics: present as mock-first evaluation layer.
+- Canonical Contracts: preserved through typed API, adapter, service, and contract boundaries.
+- Governance Documents: updated for v1.0 RC.
+- Feature Flags: maintained for modules, TradingView, persistence, and market intelligence.
+- Documentation: synchronized around the v1.0 RC milestone.
+
+### Verification
+
+- CI Status: Unavailable.
+- Reason: Infrastructure limitation.
+- Local verification: Pending in this remote session.
+
 ## 2026-06-16 - Phase 10 Market Intelligence Layer Complete
 
 ### Added

@@ -1,10 +1,17 @@
 # OMEGA AI Web Platform
 
-Dashboard-first prototype for the autonomous multi-market trading platform spec.
+OMEGA v1.0 Release Candidate for a mock-first AI Trading Operating System.
+
+Core feedback loop:
+
+```text
+Knowledge → Market Intelligence → AI → SignalFlow → Paper Trading → Analytics → Learning → Knowledge
+```
 
 ## Recovery Baseline
 
 - [Recovery analysis](docs/RECOVERY_ANALYSIS.md)
+- [OMEGA core architecture](OMEGA_ARCHITECTURE.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Project status](docs/PROJECT_STATUS.md)
 - [Changelog](CHANGELOG.md)

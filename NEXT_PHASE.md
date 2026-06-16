@@ -1,16 +1,18 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 10 Complete
+## Current Status: OMEGA v1.0 Release Candidate
 
-**Phase**: 10 - Market Intelligence Layer
-**Status**: ✅ COMPLETE
+**Version**: OMEGA v1.0 RC - Core Platform
+**Status**: ✅ RELEASE CANDIDATE
 **Date**: 2026-06-16
 
 Last updated: 2026-06-16
 
 ## Repository Status
 
-OMEGA AI is a stable, frontend-only Next.js App Router platform backed by mock data. The app has modular routes, reusable layout components, independently renderable feature modules, frontend API contracts, an adapter layer, typed mock services, HTTP adapter shells, domain models, state machines, event system, contract models, and now a complete persistence architecture layer for future backend integration.
+OMEGA AI is a stable, frontend-only Next.js App Router platform backed by mock data. The app has modular routes, reusable layout components, independently renderable feature modules, frontend API contracts, an adapter layer, typed mock services, HTTP adapter shells, domain models, state machines, event system, contract models, persistence architecture, Knowledge Layer, Market Intelligence Layer, SignalFlow integration, Paper Trading validation, TradingView foundation, and Analytics feedback.
+
+OMEGA v1.0 RC is the Core Platform release candidate. The roadmap now moves from phase-only development to versioned releases.
 
 No backend, database, authentication, broker API, exchange API, real AI provider, live market feed, real TradingView integration, secrets management, background worker, autonomous execution engine, or live risk engine is implemented.
 
@@ -41,6 +43,36 @@ flowchart LR
     Cache["Cache<T>"]
   end
 ```
+
+## Core Feedback Loop
+
+```text
+Knowledge
+↓
+Market Intelligence
+↓
+AI
+↓
+SignalFlow
+↓
+Paper Trading
+↓
+Analytics
+↓
+Learning
+↓
+Knowledge
+```
+
+## Version Roadmap
+
+| Version | Focus |
+| --- | --- |
+| v1.0 | Core Platform |
+| v1.1 | AI Reasoning |
+| v1.2 | Advanced Analytics |
+| v1.5 | Market Data |
+| v2.0 | Autonomous Trading Research, not autonomous live trading |
 
 ## Completed Phases
 
