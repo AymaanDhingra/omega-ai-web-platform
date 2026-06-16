@@ -218,6 +218,20 @@ export const omegaModules: ModuleDefinition[] = [
     futureDependencies: ["AuthService", "UserPreferences"],
     futureBackendDependency: "User settings API",
     futureAIDependency: "No AI dependency required"
+  }),
+  moduleDefinition({
+    id: "tradingview-foundation",
+    name: "TradingView Foundation",
+    description: "Phase 7 foundation layer for future TradingView integration. Mock-only placeholders — no real widget, no real connection. TradingView remains OPTIONAL.",
+    status: "placeholder",
+    version: "0.1.0",
+    featureFlag: "ENABLE_TRADINGVIEW",
+    icon: "candles",
+    pageRoute: "/tradingview",
+    dependencies: ["dashboard"],
+    futureDependencies: ["tradingview-provider"],
+    futureBackendDependency: "TradingView chart and watchlist sync API",
+    futureAIDependency: "Signal validation against TradingView indicators"
   })
 ];
 

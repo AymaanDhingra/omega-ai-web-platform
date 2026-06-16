@@ -10,6 +10,11 @@ export function SystemStatusBadge({ state }: { state: SystemHealthState }) {
 }
 
 export function ModuleStatusBadge({ status }: { status: ModuleStatus }) {
-  const tone: MetricTone = status === "active" ? "up" : status === "mock" ? "flat" : status === "locked" ? "down" : "warn";
+  const tone: MetricTone =
+    status === "active" ? "up" :
+    status === "mock" ? "flat" :
+    status === "locked" ? "down" :
+    status === "placeholder" ? "warn" :
+    "warn";
   return <StatusBadge label={status} tone={tone} />;
 }

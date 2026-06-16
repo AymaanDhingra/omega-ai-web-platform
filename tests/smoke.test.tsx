@@ -47,11 +47,13 @@ import { PageHeader } from "../components/layout/PageHeader";
 import { StatusBadge } from "../components/layout/StatusBadge";
 import { MarketCard } from "../components/market/MarketCard";
 import { TradingViewTestingModule } from "../components/modules/TradingViewTestingModule";
+import { TradingViewFoundationModule } from "../components/modules/TradingViewFoundationModule";
+import { tradingViewFoundationMock } from "../lib/mock/tradingview-contracts";
+import { __setFeatureFlagForTest, getFeatureFlagState } from "../lib/feature-flags";
 import { TradeCard } from "../components/trading/TradeCard";
 import { CURRENT_API_VERSION, createMockResponseMeta } from "../lib/contracts/backend";
 import { dataSources, getDataSource } from "../lib/data-sources";
 import { createMockEventBus } from "../lib/events";
-import { getFeatureFlagState } from "../lib/feature-flags";
 import { systemStatuses } from "../lib/mock/ai";
 import { marketAssets } from "../lib/mock/market";
 import { omegaModules } from "../lib/mock/modules";
@@ -104,12 +106,13 @@ test("module registry loads enriched OMEGA modules", async () => {
   const modules = await mockAISystemService.getModules();
   const moduleIds = modules.map((moduleDefinition) => moduleDefinition.id);
 
-  assert.equal(modules.length, 14);
+  assert.equal(modules.length, 15);
   assert.ok(moduleIds.includes("dashboard"));
   assert.ok(moduleIds.includes("market-watch"));
   assert.ok(moduleIds.includes("ai-brain"));
   assert.ok(moduleIds.includes("news-intelligence"));
   assert.ok(moduleIds.includes("settings"));
+  assert.ok(moduleIds.includes("tradingview-foundation"));
 
   for (const moduleDefinition of modules) {
     assert.ok(moduleDefinition.version);
@@ -124,12 +127,13 @@ test("module registry loads enriched OMEGA modules", async () => {
 test("feature flags expose all frontend module gates", () => {
   const flags = getFeatureFlagState();
 
-  // 13 core module flags + 3 TradingView flags + 3 persistence flags = 19 total
-  assert.equal(Object.keys(flags).length, 19);
+  // 13 core module flags + 4 TradingView flags + 3 persistence flags + 3 sub-layer flags = 23 total
+  assert.equal(Object.keys(flags).length, 23);
   assert.equal(flags.ENABLE_MARKETS, true);
   assert.equal(flags.ENABLE_AI, true);
   assert.equal(flags.ENABLE_SETTINGS, true);
   // TradingView flags default to false (optional)
+  assert.equal(flags.ENABLE_TRADINGVIEW, false);
   assert.equal(flags.ENABLE_TRADINGVIEW_CHARTS, false);
   assert.equal(flags.ENABLE_TRADINGVIEW_WATCHLISTS, false);
   assert.equal(flags.ENABLE_TRADINGVIEW_VALIDATION, false);
@@ -137,6 +141,10 @@ test("feature flags expose all frontend module gates", () => {
   assert.equal(flags.ENABLE_PERSISTENCE, true);
   assert.equal(flags.ENABLE_CACHE, true);
   assert.equal(flags.ENABLE_SESSIONS, true);
+  // Persistence sub-layer flags enabled
+  assert.equal(flags.ENABLE_REPOSITORIES, true);
+  assert.equal(flags.ENABLE_HISTORY, true);
+  assert.equal(flags.ENABLE_SNAPSHOTS, true);
 });
 
 test("mock services respond with dashboard-ready data", async () => {
@@ -361,4 +369,48 @@ test("TradingView testing placeholder renders without real integration", async (
   assert.match(html, /TradingView Testing Status/);
   assert.match(html, /Signal Comparison/);
   assert.match(html, /BTCUSDT/);
+});
+
+test("TradingViewFoundationModule renders EmptyState when flag is off", () => {
+  // Ensure flag is off (default)
+  __setFeatureFlagForTest("ENABLE_TRADINGVIEW", false);
+  try {
+    const html = renderToStaticMarkup(
+      <TradingViewFoundationModule state={tradingViewFoundationMock} />
+    );
+    assert.match(html, /TradingView Foundation/);
+    assert.match(html, /optional/i);
+    // Should NOT render the chart placeholder or panels
+    assert.doesNotMatch(html, /Chart Placeholder/);
+    assert.doesNotMatch(html, /Symbol Synchronization/);
+  } finally {
+    __setFeatureFlagForTest("ENABLE_TRADINGVIEW", false);
+  }
+});
+
+test("TradingViewFoundationModule renders panels when flag is on", () => {
+  __setFeatureFlagForTest("ENABLE_TRADINGVIEW", true);
+  try {
+    const html = renderToStaticMarkup(
+      <TradingViewFoundationModule state={tradingViewFoundationMock} />
+    );
+    // Header
+    assert.match(html, /TradingView Foundation/);
+    // Chart placeholder
+    assert.match(html, /Chart Placeholder/);
+    assert.match(html, /Non-Interactive/);
+    // Symbol sync
+    assert.match(html, /Symbol Synchronization/);
+    assert.match(html, /BTCUSDT/);
+    // Timeframe sync
+    assert.match(html, /Timeframe Synchronization/);
+    // Watchlists
+    assert.match(html, /Watchlists Panel/);
+    // Status panel
+    assert.match(html, /Status Overview/);
+    assert.match(html, /Chart Status/);
+    assert.match(html, /Connection Status/);
+  } finally {
+    __setFeatureFlagForTest("ENABLE_TRADINGVIEW", false);
+  }
 });
