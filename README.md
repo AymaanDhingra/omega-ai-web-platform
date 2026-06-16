@@ -75,6 +75,18 @@ npm run build
 - `/news`
 - `/admin`
 - `/settings`
+- `/tradingview` — TradingView Foundation (mock-only placeholder; renders EmptyState when `ENABLE_TRADINGVIEW` is false)
+
+## Governance
+
+| Document | Description |
+|---|---|
+| [OMEGA_CONSTITUTION.md](OMEGA_CONSTITUTION.md) | Mission, philosophy, DO/DO NOT lists, code quality standards |
+| [CANONICAL_CONTRACTS.md](CANONICAL_CONTRACTS.md) | All canonical contract surfaces — adapters, persistence, events, feature flags |
+| [ENGINEERING_RULES.md](ENGINEERING_RULES.md) | Numbered engineering rules and phase discipline rules |
+| [ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md) | ADR log — all major architectural decisions |
+| [NEXT_PHASE.md](NEXT_PHASE.md) | Current phase status and next phase planning |
+| [CHANGELOG.md](CHANGELOG.md) | All notable changes by phase |
 
 ## Still Not Implemented
 

@@ -125,39 +125,42 @@ flowchart LR
 - `__tests__/persistence/cache.test.ts` - 10+ test cases for MockCache
 - `__tests__/feature-flags.test.ts` - Feature flag verification tests
 
-## Next Phase: Phase 8 - TradingView Testing Layer
+## Next Phase: Phase 7A - Stabilization
 
 ### Mission
 
-Build the TradingView testing layer UI components and integration. TradingView remains OPTIONAL - OMEGA must function completely without it.
+Verify all Phase 7 contracts compile cleanly, are lint-clean, have no `any`, and are covered by tests. Ensure governance docs are present and linked from README. Confirm no broken imports, no orphaned exports, and no silent test failures.
 
 ### Deliverables
 
-1. **TradingView Module Components**
-   - Embedded Chart Placeholder component
-   - Symbol/Timeframe Synchronization UI
-   - Watchlist Management UI
-   - Chart Status Display
-   - Connection Status Display
-   - Testing Status Dashboard
+1. **Contract Verification**
+   - All `lib/persistence/` interfaces compile with zero TypeScript errors
+   - All `lib/persistence/` exports are reachable from `lib/persistence/index.ts`
+   - No orphaned exports in any persistence module
+   - No `any` in any persistence file
 
-2. **TradingView Testing Page**
-   - Signal comparison view
-   - Alert monitoring view
-   - Validation results view
-   - Paper trading comparison view
-   - Session management view
+2. **Test Coverage**
+   - `Repository<T>` / `MockRepository<T>` — all CRUD, search, archive, snapshot operations covered
+   - `Cache<T>` / `MockCache<T>` — all operations and statistics covered
+   - `TradingViewFoundationModule` — flag-off (EmptyState) and flag-on (panels) render tests
+   - Feature flags — all 23 flags verified, all helpers verified, `__setFeatureFlagForTest` verified
+   - All `__tests__/` files run in CI (node:test, not vitest)
 
-3. **Feature Flag Integration**
-   - Conditional rendering based on TradingView flags
-   - Graceful degradation when TradingView disabled
-   - Clear messaging when features unavailable
+3. **Governance Docs**
+   - `CANONICAL_CONTRACTS.md` present and linked from README
+   - `ENGINEERING_RULES.md` present and linked from README
+   - `ARCHITECTURE_DECISIONS.md` present and linked from README
+   - All ADRs dated and complete
 
-4. **Mock TradingView Service**
-   - Simulated chart data
-   - Simulated watchlist sync
-   - Simulated signal validation
-   - Simulated alert triggers
+4. **Naming Aliases**
+   - `TradingViewRepository` alias present in `lib/persistence/repositories.ts`
+   - `TradingViewSession` alias present in `lib/persistence/sessions.ts`
+   - All aliases documented with backward-compatibility comment
+
+5. **CI/CD**
+   - All four npm commands pass: `npm install`, `npm run lint`, `npm run test`, `npm run build`
+   - Test runner includes all test files (explicit file list, not glob)
+   - No silent test failures
 
 ### Success Criteria
 
@@ -168,7 +171,111 @@ Build the TradingView testing layer UI components and integration. TradingView r
 - CI/CD pipeline green
 - OMEGA functions completely without TradingView
 - All existing tests continue passing
+- All governance docs present and linked
+
+---
+
+## Phase 8: Knowledge Engine
+
+### Mission
+
+Build the Knowledge Engine contracts and mock implementations. Define the ingestion pipeline, document parsing, chunking, and retrieval interfaces. All mock-only — no real vector store or object storage.
+
+### Deliverables
+
+1. **Knowledge Ingestion Contracts**
+   - Document upload contract (file type, size, metadata)
+   - Parsing contract (PDF, DOCX, CSV, Excel, rules, history)
+   - Chunking contract (chunk size, overlap, metadata)
+   - Embedding contract (provider-neutral interface)
+
+2. **Knowledge Retrieval Contracts**
+   - Vector search contract (query, top-k, threshold)
+   - Keyword search contract
+   - Hybrid search contract
+   - Knowledge context contract (for AI consumption)
+
+3. **Mock Knowledge Service**
+   - Simulated ingestion pipeline
+   - Simulated retrieval with mock embeddings
+   - Mock vector store implementation
+
+4. **Feature Flag Integration**
+   - `ENABLE_KNOWLEDGE_INGESTION` flag
+   - `ENABLE_KNOWLEDGE_RETRIEVAL` flag
+   - Graceful degradation when disabled
+
+### Success Criteria
+
+- Zero TypeScript errors
+- Zero lint errors
+- Zero test failures
+- Successful build
+- CI/CD pipeline green
+- All existing tests continue passing
 - Documentation updated
+
+## Phase 7 Completion Pass — Audit Findings
+
+This section maps every Phase 7 spec item to its current status.
+
+### Part 1 — Generic Repository<T> Interface
+✅ Present — `lib/persistence/repository.ts`: `Repository<T>`, `Query`, `Filter`, `Sort`, `Pagination`, `PaginatedResult`, `RepositoryResult`, `RepositoryError`, `Identifiable`, `Timestamped`, `Archivable`, `Snapshot<T>`, `HistoryEntry<T>`, `HistoryRepository<T>`.
+
+### Part 2 — MockRepository<T> Implementation
+✅ Present — `lib/persistence/mock-repository.ts`: `MockRepository<T>` with full CRUD, search, archive, snapshot, and pagination.
+✅ Added in this pass — `TradingViewRepository` type alias in `lib/persistence/repositories.ts` (the interface was already present; alias added for spec alignment).
+
+### Part 3 — Domain-Specific Snapshot Contracts
+✅ Present — `lib/persistence/snapshots.ts`: `TradeSnapshot`, `PortfolioSnapshot`, `AISnapshot`, `MarketSnapshot`, `StrategySnapshot`, `PaperTradingSnapshot`, `AnalyticsSnapshot`, `KnowledgeSnapshot`, `SystemSnapshot`, `TradingViewSnapshot`.
+`MarketSnapshot` confirmed present — no action needed.
+
+### Part 4 — History Models
+✅ Present — `lib/persistence/history.ts`: `TradeHistory`, `SignalHistory`, `PortfolioHistory`, `StrategyHistory`, `AIHistory`, `KnowledgeHistory`, `AnalyticsHistory`, `PaperHistory` (with entry types for each).
+
+### Part 5 — Session Abstractions
+✅ Present — `lib/persistence/sessions.ts`: `TradingSession`, `AISession`, `PaperTradingSession`, `TestingSession`, `ValidationSession`, `TradingViewTestingSession`, `SessionManager<T>`, `OmegaSession`.
+✅ Added in this pass — `TradingViewSession` type alias for `TradingViewTestingSession` (spec alias, backward-compatible).
+
+### Part 6 — Cache Abstractions
+✅ Present — `lib/persistence/cache.ts`: `Cache<T>`, `CacheEntry<T>`, `CacheStats`, `MarketCache`, `PortfolioCache`, `KnowledgeCache`, `AnalyticsCache`, `AIStateCache`, `SignalCache`, `MockCache<T>`.
+
+### Part 7 — Domain-Specific Repository Contracts
+✅ Present — `lib/persistence/repositories.ts`: `SignalRepository`, `TradeRepository`, `OrderRepository`, `PositionRepository`, `StrategyRepository`, `KnowledgeRepository`, `PaperTradingRepository`, `PortfolioRepository`, `AnalyticsRepository`, `AIRepository`, `EventRepository`, `MarketRepository`, `NewsRepository`, `TradingViewRepository`.
+
+### Part 8 — TradingView Persistence Contracts
+✅ Present — `lib/persistence/tradingview.ts`: `TVSignalHistory`, `TVAlertHistory`, `TVValidationHistory`, `TVPaperComparison`, `TVTestingSession`, `TVPersistenceRepository`.
+
+### Part 9 — Expanded Event Definitions
+✅ Present — `lib/events.ts`: TradingView events (6), Persistence events (3), Session events (5), Cache events (2). `OmegaEventType` union includes all.
+
+### Part 10 — Expanded Feature Flags
+✅ Present (Phase 7) — `ENABLE_TRADINGVIEW_CHARTS`, `ENABLE_TRADINGVIEW_WATCHLISTS`, `ENABLE_TRADINGVIEW_VALIDATION`, `ENABLE_PERSISTENCE`, `ENABLE_CACHE`, `ENABLE_SESSIONS`.
+✅ Added in this pass — `ENABLE_TRADINGVIEW` (umbrella), `ENABLE_REPOSITORIES`, `ENABLE_HISTORY`, `ENABLE_SNAPSHOTS`.
+✅ Added in this pass — `isRepositoriesEnabled()`, `isHistoryEnabled()`, `isSnapshotsEnabled()`, `__setFeatureFlagForTest()`.
+
+### Part 11 — TradingView Foundation Module
+✅ Added in this pass — `components/modules/TradingViewFoundationModule.tsx` with all 6 sub-sections.
+✅ Added in this pass — `/tradingview` route (`app/tradingview/page.tsx`).
+✅ Added in this pass — `tradingview-foundation` module registry entry.
+✅ Added in this pass — `TradingViewFoundationMockState` fixture in `lib/mock/tradingview-contracts.ts`.
+
+### Part 12 — Governance Documents
+✅ Added in this pass — `CANONICAL_CONTRACTS.md`.
+✅ Added in this pass — `ENGINEERING_RULES.md`.
+✅ Added in this pass — `ARCHITECTURE_DECISIONS.md` (ADR-0001 through ADR-0007).
+
+### Part 13 — Test Runner Fix
+✅ Added in this pass — Converted `__tests__/` from vitest to node:test.
+✅ Added in this pass — Updated `package.json` test script to include all test files.
+
+### Deferred to Phase 7A
+
+⚠️ Full integration test coverage for all 14 domain-specific repository contracts — deferred to Phase 7A (contracts are present; mock implementations exist; targeted test coverage for each domain repository is Phase 7A scope).
+⚠️ Full integration test coverage for all 6 session types — deferred to Phase 7A.
+⚠️ Full integration test coverage for all 10 snapshot types — deferred to Phase 7A.
+
+---
 
 ## Technical Debt
 

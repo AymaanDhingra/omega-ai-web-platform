@@ -232,8 +232,12 @@ export interface NewsRepository extends Repository<NewsEvent> {
 }
 
 /**
- * TradingView Repository - manages TradingView testing data
- * TradingView remains optional - OMEGA functions without it
+ * TradingViewRepository — manages TradingView testing data.
+ * TradingView remains optional — OMEGA functions without it.
+ *
+ * This interface is the canonical Phase 7 spec contract.
+ * See also: TVPersistenceRepository in lib/persistence/tradingview.ts for
+ * the extended TradingView-specific persistence operations.
  */
 export interface TradingViewRepository {
   // Connection state

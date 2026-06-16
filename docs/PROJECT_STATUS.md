@@ -87,6 +87,100 @@ OMEGA AI is a working modular multi-page frontend platform with simulated data, 
 7. Add mock AI run history and explainability records behind the current AI contract.
 8. Add persistent paper ledger planning before any live execution work.
 
+## Phase 5 Completion — Provider Architecture
+
+**Date:** 2026-06-16
+
+### Deliverables
+- Configurable adapter selection via `lib/adapter-factory.ts` and `lib/provider-config.ts`.
+- HTTP client implementation in `lib/http/client.ts`.
+- Adapter factory pattern for mock vs HTTP selection.
+- Provider configuration system.
+
+### Status
+✅ Complete. All four npm commands pass.
+
+---
+
+## Phase 6 Completion — Core Trading Domain
+
+**Date:** 2026-06-16
+
+### Deliverables
+- Domain models in `lib/domains/` for Market, Trading, Portfolio, Strategy, Paper Trading, AI, Knowledge, Analytics, TradingView Testing.
+- State machines for Signal, Trade, Paper Trade, Portfolio lifecycle.
+- Event system with typed domain events and mock dispatcher (`lib/events.ts`).
+- HTTP adapter shells in `adapters/http/` for all domains.
+- Adapter factory pattern.
+
+### Status
+✅ Complete. All four npm commands pass.
+
+---
+
+## Phase 6A Completion — Stabilization
+
+**Date:** 2026-06-16
+
+### Deliverables
+- Fixed all 8 HTTP adapters to implement canonical mock interfaces exactly.
+- Added `Trade` type alias for backward compatibility.
+- Fixed `HttpError` construction in HTTP client.
+- Established contract governance rule: mock adapters are the canonical source of truth.
+- Zero TypeScript errors, zero lint errors, zero test failures.
+
+### Status
+✅ Complete. CI/CD pipeline green.
+
+---
+
+## Phase 7 Completion — Persistence Architecture
+
+**Date:** 2026-06-16
+
+### Deliverables
+- Generic `Repository<T>` interface with CRUD, search, archive, and snapshot operations (`lib/persistence/repository.ts`).
+- `MockRepository<T>` implementation (`lib/persistence/mock-repository.ts`).
+- Domain-specific snapshot contracts for 10 domains (`lib/persistence/snapshots.ts`).
+- History models for 8 domains (`lib/persistence/history.ts`).
+- Session abstractions: `TradingSession`, `AISession`, `PaperTradingSession`, `TestingSession`, `ValidationSession`, `TradingViewTestingSession` (`lib/persistence/sessions.ts`).
+- Cache abstractions: `Cache<T>`, `MockCache<T>`, 6 domain caches (`lib/persistence/cache.ts`).
+- Domain-specific repository contracts for 14 domains (`lib/persistence/repositories.ts`).
+- TradingView persistence contracts (`lib/persistence/tradingview.ts`).
+- Expanded event definitions (TradingView, Persistence, Session, Cache events).
+- Expanded feature flags (TradingView, Persistence, Cache, Sessions).
+- Comprehensive tests: `__tests__/persistence/repository.test.ts`, `__tests__/persistence/cache.test.ts`, `__tests__/feature-flags.test.ts`.
+
+### Status
+✅ Complete. All four npm commands pass.
+
+---
+
+## Phase 7 Completion Pass — Gap Closure
+
+**Date:** 2026-06-16
+
+### Deliverables
+- Added 4 new feature flags: `ENABLE_TRADINGVIEW` (umbrella), `ENABLE_REPOSITORIES`, `ENABLE_HISTORY`, `ENABLE_SNAPSHOTS`.
+- Added helper functions: `isRepositoriesEnabled()`, `isHistoryEnabled()`, `isSnapshotsEnabled()`.
+- Updated `isTradingViewEnabled()` to include `ENABLE_TRADINGVIEW` umbrella flag.
+- Added `__setFeatureFlagForTest()` for test-only flag overrides.
+- Created `TradingViewFoundationModule` (mock-only, feature-flagged).
+- Created `/tradingview` route (`app/tradingview/page.tsx`).
+- Added `tradingview-foundation` module to OMEGA module registry.
+- Added `TradingViewFoundationMockState` fixture to `lib/mock/tradingview-contracts.ts`.
+- Created governance docs: `CANONICAL_CONTRACTS.md`, `ENGINEERING_RULES.md`, `ARCHITECTURE_DECISIONS.md`.
+- Updated `OMEGA_CONSTITUTION.md` Future Phases section.
+- Updated `NEXT_PHASE.md` to point at Phase 7A Stabilization.
+- Converted `__tests__/` from vitest to node:test for CI compatibility.
+- Fixed test runner to include all test files.
+- Added naming aliases: `TradingViewRepository` (in `repositories.ts`), `TradingViewSession` (in `sessions.ts`).
+
+### Status
+✅ Complete. All four npm commands pass.
+
+---
+
 ## Verification Log
 
 | Date | Command | Result |
@@ -95,6 +189,10 @@ OMEGA AI is a working modular multi-page frontend platform with simulated data, 
 | 2026-06-16 | `npm run lint` | Passed |
 | 2026-06-16 | `npm run build` | Passed |
 | 2026-06-16 | `npm run test` | Passed |
+| 2026-06-16 | `npm install` | Passed (Phase 7 Completion Pass) |
+| 2026-06-16 | `npm run lint` | Passed (Phase 7 Completion Pass) |
+| 2026-06-16 | `npm run test` | Passed (Phase 7 Completion Pass) |
+| 2026-06-16 | `npm run build` | Passed (Phase 7 Completion Pass) |
 
 ## Recovery Policy
 

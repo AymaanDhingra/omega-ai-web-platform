@@ -80,6 +80,8 @@ export type {
   TestingSession,
   ValidationSession,
   TradingViewTestingSession,
+  // Phase 7 spec alias — preserved for backward compatibility
+  TradingViewSession,
   SessionManager,
   OmegaSession
 } from "./sessions";

@@ -225,3 +225,9 @@ export type OmegaSession =
   | TestingSession
   | ValidationSession
   | TradingViewTestingSession;
+
+/**
+ * TradingViewSession — Phase 7 spec alias for TradingViewTestingSession.
+ * // Phase 7 spec alias — preserved for backward compatibility
+ */
+export type TradingViewSession = TradingViewTestingSession;

@@ -99,29 +99,109 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 
 ## Future Phases
 
-### Phase 7: Backend Skeleton
-- Create backend API endpoints
-- Implement real data sources
-- Connect HTTP adapters
-- Add authentication
+### Phase 7: Persistence + TradingView Foundation
+- Generic `Repository<T>` / `Cache<T>` / `Snapshot` / `Session` contracts (mock-only)
+- Domain-specific repository, snapshot, history, and session contracts
+- TradingView Foundation module (mock-only placeholder, feature-flagged)
+- Expanded feature flags and event definitions
 
-### Phase 8: Real Data Integration
-- Connect to real market data providers
-- Implement real broker APIs
-- Add real portfolio management
-- Implement real paper trading
+### Phase 7A: Stabilization
+- Verify all Phase 7 contracts compile cleanly
+- Lint-clean, zero `any`, tests cover all persistence and TradingView Foundation contracts
+- Governance docs present and linked from README
+- No broken imports, no orphaned exports
 
-### Phase 9: AI System
-- Implement real AI models
-- Add machine learning
-- Implement prediction engine
-- Add learning system
+### Phase 8: Knowledge Engine
+- Knowledge ingestion pipeline contracts
+- Document parsing and chunking contracts
+- Vector store interface contracts (mock-only)
+- Knowledge retrieval API contracts
 
-### Phase 10: Production Ready
-- Performance optimization
-- Security hardening
-- Monitoring and logging
-- Disaster recovery
+### Phase 8A: Stabilization
+- Knowledge Engine contract verification and test coverage
+
+### Phase 9: Paper Trading Engine
+- Persistent paper trading ledger contracts
+- Order simulation engine contracts
+- Journal and equity curve persistence
+- Paper trading session management
+
+### Phase 9A: TradingView Validation
+- Real TradingView widget integration (behind feature flag)
+- Signal comparison against TradingView indicators
+- Alert monitoring and correlation
+- Paper trading vs TradingView comparison
+
+### Phase 10: Market Data Layer
+- Market data provider interface contracts
+- Instrument registry contracts
+- Quote and candle provider contracts
+- News and economic calendar provider contracts
+
+### Phase 10A: Stabilization
+- Market Data Layer contract verification and test coverage
+
+### Phase 11: AI Orchestration
+- AI provider interface contracts (provider-neutral)
+- Tool layer for market, portfolio, knowledge, and strategy context
+- Prompt and policy registry contracts
+- Run logging and explainability contracts
+
+### Phase 11A: Stabilization
+- AI Orchestration contract verification and test coverage
+
+### Phase 12: Advanced Analytics
+- Analytics rollup and aggregation contracts
+- Performance anomaly detection contracts
+- Historical metrics persistence
+- Analytics dashboard expansion
+
+### Phase 12A: Stabilization
+- Advanced Analytics contract verification and test coverage
+
+### Phase 13: Broker Provider Layer
+- Broker adapter interface contracts (mock-only)
+- Order routing contracts
+- Risk check contracts
+- Broker reconciliation contracts
+
+### Phase 13A: Stabilization
+- Broker Provider Layer contract verification and test coverage
+
+### Phase 14: Exchange Provider Layer
+- Exchange adapter interface contracts (mock-only)
+- Crypto exchange contracts
+- Order book and execution contracts
+
+### Phase 14A: Stabilization
+- Exchange Provider Layer contract verification and test coverage
+
+### Phase 15: Backend Services
+- FastAPI backend skeleton
+- PostgreSQL schema and migration tooling
+- Redis caching and job queue
+- Authentication and permissions
+
+### Phase 15A: Stabilization
+- Backend Services verification and integration test coverage
+
+### Phase 16: Live Execution
+- Live order placement (permission-gated, audit-logged)
+- Real broker adapter implementations
+- Risk engine implementation
+- Emergency flatten capability
+
+### Phase 16A: Stabilization
+- Live Execution safety verification and audit coverage
+
+### Phase 17: Autonomous Workflows
+- Autonomous scanning and signal generation
+- Scheduled strategy execution
+- Learning feedback loops
+- Autonomous paper trading (never live without explicit human approval)
+
+### Phase 17A: Stabilization
+- Autonomous Workflow safety verification and audit coverage
 
 ## Constraints
 

@@ -120,6 +120,7 @@ Routes:
 /news
 /admin
 /settings
+/tradingview
 ```
 
 Every page uses shared layout primitives:
@@ -152,6 +153,7 @@ Independent module components:
 - `AdminModule`
 - `SettingsModule`
 - `TradingViewTestingModule`
+- `TradingViewFoundationModule`
 
 Frontend API contract files:
 
@@ -273,6 +275,8 @@ TradingView is not integrated. The frontend only has mock interfaces for future 
 - AI accuracy tracking
 
 The placeholder data lives in `lib/mock/tradingview-testing.ts` and renders through `TradingViewTestingModule`.
+
+Phase 7 added a second TradingView module: `TradingViewFoundationModule` (`components/modules/TradingViewFoundationModule.tsx`). This is the Phase 7 foundation layer — distinct from the Phase 3 testing placeholder. It renders mock-only placeholders for chart, symbol sync, timeframe sync, watchlists, and status panels. It is feature-flagged behind `ENABLE_TRADINGVIEW` (default `false`) and renders an `EmptyState` when disabled. No real TradingView widget, script tag, iframe, or credential is used. The route is `/tradingview` and the module registry entry is `tradingview-foundation`.
 
 ## Analytics Placeholders
 

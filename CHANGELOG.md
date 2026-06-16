@@ -2,6 +2,64 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 7 Completion Pass (Gap Closure)
+
+### Added
+
+- Added 4 new feature flags in `lib/feature-flags.ts` and `lib/types/index.ts`:
+  - `ENABLE_TRADINGVIEW` — umbrella flag for all TradingView integration (default `false`)
+  - `ENABLE_REPOSITORIES` — gates domain-specific Repository<T> contracts (default `true`)
+  - `ENABLE_HISTORY` — gates domain-specific history/audit-trail models (default `true`)
+  - `ENABLE_SNAPSHOTS` — gates domain-specific snapshot contracts (default `true`)
+- Added helper functions: `isRepositoriesEnabled()`, `isHistoryEnabled()`, `isSnapshotsEnabled()`.
+- Updated `isTradingViewEnabled()` to include `ENABLE_TRADINGVIEW` umbrella flag (backward-compatible).
+- Added `__setFeatureFlagForTest()` for test-only flag overrides with try/finally cleanup.
+- Added `"placeholder"` to `ModuleStatus` type union.
+- Created `TradingViewFoundationModule` (`components/modules/TradingViewFoundationModule.tsx`):
+  - Dashboard placeholder header
+  - Embedded chart placeholder (non-interactive, no real widget)
+  - Symbol synchronization (mock symbol picker stub)
+  - Timeframe synchronization (mock timeframe options)
+  - Watchlists panel (mock fixture)
+  - Status panel (Chart, Connection, Validation, Testing statuses via `SystemStatusBadge`)
+  - Feature-flagged: renders `EmptyState` when `isTradingViewEnabled()` is false
+- Created `/tradingview` route (`app/tradingview/page.tsx`).
+- Added `tradingview-foundation` module entry to OMEGA module registry (`lib/mock/modules.ts`):
+  - status `placeholder`, version `0.1.0`, featureFlag `ENABLE_TRADINGVIEW`, route `/tradingview`
+  - dependencies `['dashboard']`, futureDependencies `['tradingview-provider']`
+- Added `TradingViewFoundationMockState` interface and `tradingViewFoundationMock` fixture to `lib/mock/tradingview-contracts.ts`.
+- Created governance documents:
+  - `CANONICAL_CONTRACTS.md` — all canonical contract surfaces
+  - `ENGINEERING_RULES.md` — numbered engineering rules and phase discipline rules
+  - `ARCHITECTURE_DECISIONS.md` — ADR log (ADR-0001 through ADR-0007)
+- Added smoke tests for `TradingViewFoundationModule` (flag-off EmptyState, flag-on panels).
+- Added new feature-flag tests for all 4 new flags and helpers.
+
+### Changed
+
+- Refreshed `OMEGA_CONSTITUTION.md` Future Phases section: updated roadmap from Phase 7 through Phase 17A.
+- Refreshed `docs/PROJECT_STATUS.md`: appended Phase 5, 6, 6A, 7, and 7 Completion Pass sections; updated Verification Log.
+- Refreshed `NEXT_PHASE.md`: updated next phase from Phase 8 to Phase 7A Stabilization; pushed Phase 8 (Knowledge Engine) description down.
+- Updated `README.md`: added `/tradingview` route; added `## Governance` section linking all governance docs.
+- Updated `docs/ARCHITECTURE.md`: added `/tradingview` to routes list; added `TradingViewFoundationModule` to module list; added paragraph under TradingView Testing Preparation section.
+- Converted `__tests__/feature-flags.test.ts`, `__tests__/persistence/repository.test.ts`, `__tests__/persistence/cache.test.ts` from vitest to node:test for CI compatibility.
+- Updated `package.json` test script to include all test files (explicit list).
+- Updated smoke test flag count from 19 to 23.
+- Updated smoke test module count from 14 to 15.
+
+### Verified
+
+- `npm install` passes.
+- `npm run lint` passes.
+- `npm run test` passes.
+- `npm run build` passes.
+- CI/CD Pipeline: GREEN.
+- TradingView remains OPTIONAL — OMEGA functions without it.
+- All existing tests continue passing.
+- Contract governance maintained: mock adapters are canonical source of truth.
+
+---
+
 ## 2026-06-16 - Phase 7 Persistence Architecture Complete
 
 ### Added
