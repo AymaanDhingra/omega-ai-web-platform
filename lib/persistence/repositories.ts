@@ -135,7 +135,7 @@ export interface KnowledgeRepository extends Repository<KnowledgeDocument> {
   findIndexed(): Promise<RepositoryResult<KnowledgeDocument[]>>;
   findQueued(): Promise<RepositoryResult<KnowledgeDocument[]>>;
   markIndexed(id: string): Promise<RepositoryResult<KnowledgeDocument>>;
-  search(query: string): Promise<RepositoryResult<KnowledgeDocument[]>>;
+  searchDocuments(query: string): Promise<RepositoryResult<KnowledgeDocument[]>>;
 }
 
 /**
