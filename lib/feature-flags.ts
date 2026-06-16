@@ -32,6 +32,11 @@ export const FEATURE_FLAGS: Record<FeatureFlagName, boolean> = {
   ENABLE_TRADINGVIEW_WATCHLISTS: false,
   ENABLE_TRADINGVIEW_VALIDATION: false,
   
+  // Market intelligence flags - mock enabled
+  ENABLE_MARKET_INTELLIGENCE: true,
+  ENABLE_MARKET_ANALYSIS: true,
+  ENABLE_MARKET_INSIGHTS: true,
+  
   // Persistence flags - enabled for Phase 7
   ENABLE_PERSISTENCE: true,
   ENABLE_CACHE: true,

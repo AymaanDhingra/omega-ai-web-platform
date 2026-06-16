@@ -29,6 +29,10 @@ export type FeatureFlagName =
   | "ENABLE_TRADINGVIEW_CHARTS"
   | "ENABLE_TRADINGVIEW_WATCHLISTS"
   | "ENABLE_TRADINGVIEW_VALIDATION"
+  // Market intelligence flags
+  | "ENABLE_MARKET_INTELLIGENCE"
+  | "ENABLE_MARKET_ANALYSIS"
+  | "ENABLE_MARKET_INSIGHTS"
   // Persistence flags
   | "ENABLE_PERSISTENCE"
   | "ENABLE_CACHE"
@@ -328,4 +332,140 @@ export interface DashboardSnapshot {
   candles: [number, number, number, number][];
   analyticsGroups: AnalyticsGroup[];
   tradingViewTesting: TradingViewTestingSummary;
+}
+
+export type MarketCondition = "bullish" | "bearish" | "neutral" | "volatile" | "consolidating";
+export type MarketTrend = "uptrend" | "downtrend" | "sideways" | "reversal" | "breakout";
+export type MarketSentiment = "very-bullish" | "bullish" | "neutral" | "bearish" | "very-bearish";
+export type MarketRegime = "trending" | "ranging" | "volatile" | "calm" | "transition";
+export type MarketEventType = "economic" | "sector" | "news" | "volatility" | "session" | "tradingview" | "paper-trading";
+
+export interface MarketContext {
+  id: string;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  condition: MarketCondition;
+  trend: MarketTrend;
+  sentiment: MarketSentiment;
+  regime: MarketRegime;
+  volatility: number;
+  volume: string;
+  price?: string;
+  source: string;
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketEvent {
+  id: string;
+  type: MarketEventType;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  title: string;
+  description: string;
+  impact: "high" | "medium" | "low";
+  sentiment: MarketSentiment;
+  source: string;
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketObservation {
+  id: string;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  observation: string;
+  confidence: number;
+  source: "economic" | "sector" | "news" | "volatility" | "session" | "tradingview" | "paper-trading" | "mock";
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketInsight {
+  id: string;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  insight: string;
+  implications: string[];
+  confidence: number;
+  relatedEvents: string[];
+  relatedObservations: string[];
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketRisk {
+  id: string;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  riskType: string;
+  description: string;
+  severity: "critical" | "high" | "medium" | "low";
+  probability: number;
+  impact: number;
+  mitigation: string[];
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketOpportunity {
+  id: string;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  opportunityType: string;
+  description: string;
+  potential: number;
+  timeframe: string;
+  requirements: string[];
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketAnalysis {
+  id: string;
+  timestamp: string;
+  market: string;
+  symbol?: string;
+  context: MarketContext;
+  observations: MarketObservation[];
+  insights: MarketInsight[];
+  risks: MarketRisk[];
+  opportunities: MarketOpportunity[];
+  summary: string;
+  confidence: number;
+  metadata: Record<string, unknown>;
+}
+
+export interface MarketSummary {
+  id: string;
+  timestamp: string;
+  market: string;
+  summary: string;
+  keyPoints: string[];
+  risks: string[];
+  opportunities: string[];
+  nextActions: string[];
+  generatedAt: string;
+  generatedBy: "mock-market-intelligence" | "ai-analysis";
+}
+
+export interface MarketIntelligenceRepository {
+  getContexts(market?: string): Promise<MarketContext[]>;
+  getEvents(market?: string): Promise<MarketEvent[]>;
+  getObservations(market?: string): Promise<MarketObservation[]>;
+  getInsights(market?: string): Promise<MarketInsight[]>;
+  getRisks(market?: string): Promise<MarketRisk[]>;
+  getOpportunities(market?: string): Promise<MarketOpportunity[]>;
+  analyzeMarket(market: string, symbol?: string): Promise<MarketAnalysis>;
+  summarizeMarket(market: string): Promise<MarketSummary>;
+}
+
+export interface MarketIntelligenceSignalInput {
+  signalId: string;
+  market: string;
+  symbol: string;
+  analysis: MarketAnalysis;
+  relevanceScore: number;
+  reasoning: string;
+  appliedAt: string;
 }

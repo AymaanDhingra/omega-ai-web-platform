@@ -39,6 +39,7 @@ npm run build
 - Mock paper trading, analytics, and TradingView testing contract models for future backend integration
 - Shared app result states and a mock system event bus in `lib/result.ts` and `lib/events.ts`
 - Feature flags for every frontend module in `lib/feature-flags.ts`
+- Mock-first Market Intelligence Layer that reuses the existing market snapshot flow and provides structured context to SignalFlow
 - Simulated market watch, portfolio, AI states, system health, trade center, backtesting, paper trading, knowledge uploads, autonomous loops, analytics, TradingView testing placeholders, news intelligence, chat commands, module registry, and admin panels
 - Live trading and broker connections are intentionally locked until API credentials, execution permissions, and risk rules are supplied
 

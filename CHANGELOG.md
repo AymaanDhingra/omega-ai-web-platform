@@ -2,6 +2,23 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 10 Market Intelligence Layer Complete
+
+### Added
+
+- Added mock-first Market Intelligence contracts: MarketContext, MarketCondition, MarketTrend, MarketSentiment, MarketRegime, MarketEvent, MarketAnalysis, MarketObservation, MarketInsight, MarketSummary, MarketRisk, and MarketOpportunity.
+- Added Market Intelligence feature flags: ENABLE_MARKET_INTELLIGENCE, ENABLE_MARKET_ANALYSIS, and ENABLE_MARKET_INSIGHTS.
+- Added mock Market Intelligence repository using existing market snapshot data, mock economic events, sector trends, volatility, TradingView observations, and paper trading observations.
+- Extended existing market service, adapter, and API rather than creating a parallel market pipeline.
+- Added SignalFlow integration helpers that prepare Market Intelligence as an additional input to existing signals.
+- Added Phase 10 tests for contracts, repository access, market analysis, TradingView optional context, and SignalFlow enrichment.
+
+### Verified
+
+- CI Status: Unavailable.
+- Reason: Infrastructure limitation.
+- Local verification: Pending in this remote session.
+
 ## 2026-06-16 - Phase 7 Persistence Architecture Complete
 
 ### Added
