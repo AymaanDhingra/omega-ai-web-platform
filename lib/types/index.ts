@@ -29,6 +29,10 @@ export type FeatureFlagName =
   | "ENABLE_TRADINGVIEW_CHARTS"
   | "ENABLE_TRADINGVIEW_WATCHLISTS"
   | "ENABLE_TRADINGVIEW_VALIDATION"
+  // Decision Intelligence flags
+  | "ENABLE_DECISION_INTELLIGENCE"
+  | "ENABLE_DECISION_EXPLANATIONS"
+  | "ENABLE_DECISION_TRACE"
   // Persistence flags
   | "ENABLE_PERSISTENCE"
   | "ENABLE_CACHE"
@@ -328,4 +332,87 @@ export interface DashboardSnapshot {
   candles: [number, number, number, number][];
   analyticsGroups: AnalyticsGroup[];
   tradingViewTesting: TradingViewTestingSummary;
+}
+
+export type DecisionSource = "knowledge" | "market-intelligence" | "ai" | "signalflow" | "paper-trading" | "analytics" | "experience" | "tradingview";
+
+export interface DecisionFactor {
+  id: string;
+  source: DecisionSource;
+  label: string;
+  contribution: "supporting" | "cautionary" | "neutral";
+  weight: number;
+  description: string;
+  metadata: Record<string, unknown>;
+}
+
+export interface DecisionConfidence {
+  score: number;
+  label: "high" | "medium" | "low";
+  drivers: DecisionFactor[];
+  cautions: DecisionFactor[];
+}
+
+export interface DecisionContext {
+  id: string;
+  signalId: string;
+  symbol: string;
+  market: string;
+  createdAt: string;
+  factors: DecisionFactor[];
+  confidence: DecisionConfidence;
+  sourceSummary: Record<DecisionSource, string>;
+}
+
+export interface DecisionInsight {
+  id: string;
+  title: string;
+  description: string;
+  source: DecisionSource;
+  confidence: number;
+  createdAt: string;
+}
+
+export interface DecisionExplanation {
+  id: string;
+  signalId: string;
+  explanation: string;
+  contextId: string;
+  factorIds: string[];
+  createdAt: string;
+}
+
+export interface DecisionTrace {
+  id: string;
+  signalId: string;
+  steps: { source: DecisionSource; input: string; contribution: string; timestamp: string }[];
+  finalSignalFlowDecision: Signal;
+  createdAt: string;
+}
+
+export interface DecisionSummary {
+  id: string;
+  generatedAt: string;
+  summary: string;
+  contexts: DecisionContext[];
+  insights: DecisionInsight[];
+  explanations: DecisionExplanation[];
+  traces: DecisionTrace[];
+}
+
+export interface DecisionSnapshot {
+  id: string;
+  timestamp: string;
+  summary: DecisionSummary;
+  generatedBy: "mock-decision-intelligence";
+}
+
+export interface DecisionContextRepository {
+  getContext(signalId: string): Promise<DecisionContext | null>;
+  listContexts(): Promise<DecisionContext[]>;
+  getInsights(): Promise<DecisionInsight[]>;
+  explain(signalId: string): Promise<DecisionExplanation>;
+  trace(signalId: string): Promise<DecisionTrace>;
+  summarize(): Promise<DecisionSummary>;
+  createSnapshot(): Promise<DecisionSnapshot>;
 }

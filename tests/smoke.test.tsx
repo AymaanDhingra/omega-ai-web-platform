@@ -124,8 +124,8 @@ test("module registry loads enriched OMEGA modules", async () => {
 test("feature flags expose all frontend module gates", () => {
   const flags = getFeatureFlagState();
 
-  // 13 core module flags + 3 TradingView flags + 3 persistence flags = 19 total
-  assert.equal(Object.keys(flags).length, 19);
+  // 13 core module flags + 3 TradingView flags + 3 decision intelligence flags + 3 persistence flags = 22 total
+  assert.equal(Object.keys(flags).length, 22);
   assert.equal(flags.ENABLE_MARKETS, true);
   assert.equal(flags.ENABLE_AI, true);
   assert.equal(flags.ENABLE_SETTINGS, true);
@@ -133,6 +133,10 @@ test("feature flags expose all frontend module gates", () => {
   assert.equal(flags.ENABLE_TRADINGVIEW_CHARTS, false);
   assert.equal(flags.ENABLE_TRADINGVIEW_WATCHLISTS, false);
   assert.equal(flags.ENABLE_TRADINGVIEW_VALIDATION, false);
+  // Decision Intelligence flags enabled
+  assert.equal(flags.ENABLE_DECISION_INTELLIGENCE, true);
+  assert.equal(flags.ENABLE_DECISION_EXPLANATIONS, true);
+  assert.equal(flags.ENABLE_DECISION_TRACE, true);
   // Persistence flags enabled
   assert.equal(flags.ENABLE_PERSISTENCE, true);
   assert.equal(flags.ENABLE_CACHE, true);
