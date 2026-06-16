@@ -12,6 +12,12 @@ export interface PaperAccount {
   cash: string;
   equity: string;
   status: "Mock" | "Active" | "Locked";
+  // Phase 8 extensions — all optional, backward-compatible
+  description?: string;
+  tags?: string[];
+  riskProfile?: { maxDrawdown: string; maxPositionSize: string; dailyLossLimit: string };
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface PaperOrder {
@@ -24,6 +30,14 @@ export interface PaperOrder {
   requestedPrice: string;
   status: PaperOrderStatus;
   createdAt: string;
+  // Phase 8 extensions — all optional, backward-compatible
+  filledPrice?: string;
+  filledAt?: string;
+  commission?: string;
+  slippage?: string;
+  timeInForce?: 'GTC' | 'DAY' | 'IOC';
+  notes?: string;
+  signalId?: string;
 }
 
 export interface PaperPosition {
@@ -35,12 +49,28 @@ export interface PaperPosition {
   averagePrice: string;
   markPrice: string;
   unrealizedPnl: string;
+  // Phase 8 extensions — all optional, backward-compatible
+  entryDate?: string;
+  duration?: number;
+  maxPrice?: string;
+  minPrice?: string;
+  realizedPnl?: string;
+  stopLoss?: string;
+  takeProfit?: string;
 }
 
 export interface PaperPortfolio {
   account: PaperAccount;
   positions: PaperPosition[];
   equityCurve: number[];
+  // Phase 8 extensions — all optional, backward-compatible
+  totalValue?: string;
+  dailyPnl?: string;
+  weeklyPnl?: string;
+  monthlyPnl?: string;
+  drawdown?: string;
+  sharpeRatio?: string;
+  updatedAt?: string;
 }
 
 export interface TradeJournalEntry {
@@ -53,6 +83,16 @@ export interface TradeJournalEntry {
   thesis: string;
   lesson: string;
   mood: TradeJournalMood;
+  // Phase 8 extensions — all optional, backward-compatible
+  tags?: string[];
+  screenshots?: string[];
+  strategy?: string;
+  timeframe?: string;
+  entryPrice?: string;
+  exitPrice?: string;
+  pnl?: string;
+  duration?: number;
+  rating?: 1 | 2 | 3 | 4 | 5;
 }
 
 export interface PaperPerformanceMetrics {
@@ -62,6 +102,18 @@ export interface PaperPerformanceMetrics {
   maxDrawdown: string;
   expectancy: string;
   totalTrades: number;
+  // Phase 8 extensions — all optional, backward-compatible
+  sharpeRatio?: string;
+  sortinoRatio?: string;
+  calmarRatio?: string;
+  averageWin?: string;
+  averageLoss?: string;
+  largestWin?: string;
+  largestLoss?: string;
+  averageDuration?: number;
+  consecutiveWins?: number;
+  consecutiveLosses?: number;
+  recoveryFactor?: string;
 }
 
 export interface PaperTradingState {

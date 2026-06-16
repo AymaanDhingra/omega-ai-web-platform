@@ -64,6 +64,27 @@ export const FEATURE_FLAGS: Record<FeatureFlagName, boolean> = {
    * lib/persistence/snapshots.ts. Mock-only contract layer.
    */
   ENABLE_SNAPSHOTS: true,
+
+  /**
+   * ENABLE_PAPER_LIFECYCLE — gates the paper trading lifecycle event pipeline
+   * (order created → filled → position opened → closed → journal entry → performance update).
+   * Mock-only contract layer; no real execution engine is connected.
+   */
+  ENABLE_PAPER_LIFECYCLE: true,
+
+  /**
+   * ENABLE_SIGNAL_FLOW — gates the SignalFlowOrchestrator pipeline
+   * (market analysis → AI analysis → signal generation → validation → order creation).
+   * Mock-only contract layer; no real AI or broker is connected.
+   */
+  ENABLE_SIGNAL_FLOW: true,
+
+  /**
+   * ENABLE_PAPER_ANALYTICS — gates the extended paper trading analytics models
+   * (Sharpe, Sortino, Calmar, profit factor, average duration, best/worst trade).
+   * Mock-only contract layer.
+   */
+  ENABLE_PAPER_ANALYTICS: true,
 };
 
 export function isFeatureEnabled(flag: FeatureFlagName): boolean {
@@ -132,6 +153,30 @@ export function isHistoryEnabled(): boolean {
  */
 export function isSnapshotsEnabled(): boolean {
   return FEATURE_FLAGS.ENABLE_SNAPSHOTS;
+}
+
+/**
+ * Check if the paper trading lifecycle event pipeline is available.
+ * Gates order-created → filled → position-opened → closed → journal → performance events.
+ */
+export function isPaperLifecycleEnabled(): boolean {
+  return FEATURE_FLAGS.ENABLE_PAPER_LIFECYCLE;
+}
+
+/**
+ * Check if the SignalFlowOrchestrator pipeline is available.
+ * Gates market-analysis → AI-analysis → signal-generation → validation → order-creation.
+ */
+export function isSignalFlowEnabled(): boolean {
+  return FEATURE_FLAGS.ENABLE_SIGNAL_FLOW;
+}
+
+/**
+ * Check if extended paper trading analytics models are available.
+ * Gates Sharpe, Sortino, Calmar, profit factor, average duration, best/worst trade.
+ */
+export function isPaperAnalyticsEnabled(): boolean {
+  return FEATURE_FLAGS.ENABLE_PAPER_ANALYTICS;
 }
 
 /**

@@ -38,7 +38,11 @@ export type FeatureFlagName =
   // Persistence sub-layer flags (Phase 7 gap-closure)
   | "ENABLE_REPOSITORIES"
   | "ENABLE_HISTORY"
-  | "ENABLE_SNAPSHOTS";
+  | "ENABLE_SNAPSHOTS"
+  // Phase 8 flags — paper trading lifecycle + signal flow + analytics
+  | "ENABLE_PAPER_LIFECYCLE"
+  | "ENABLE_SIGNAL_FLOW"
+  | "ENABLE_PAPER_ANALYTICS";
 
 export type OmegaIcon =
   | "activity"
