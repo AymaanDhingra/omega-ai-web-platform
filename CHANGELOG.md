@@ -2,6 +2,92 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 8: Paper Trading Architecture Extension
+
+### Added
+
+**Paper Trading Contracts (`lib/contracts/paper-trading.ts`)** — all new fields are optional, zero breaking changes:
+- `PaperAccount`: `description`, `tags`, `riskProfile` (maxDrawdown, maxPositionSize, dailyLossLimit), `createdAt`, `updatedAt`
+- `PaperOrder`: `filledPrice`, `filledAt`, `commission`, `slippage`, `timeInForce` (GTC/DAY/IOC), `notes`, `signalId`
+- `PaperPosition`: `entryDate`, `duration`, `maxPrice`, `minPrice`, `realizedPnl`, `stopLoss`, `takeProfit`
+- `PaperPortfolio`: `totalValue`, `dailyPnl`, `weeklyPnl`, `monthlyPnl`, `drawdown`, `sharpeRatio`, `updatedAt`
+- `TradeJournalEntry`: `tags`, `screenshots`, `strategy`, `timeframe`, `entryPrice`, `exitPrice`, `pnl`, `duration`, `rating`
+- `PaperPerformanceMetrics`: `sharpeRatio`, `sortinoRatio`, `calmarRatio`, `averageWin`, `averageLoss`, `largestWin`, `largestLoss`, `averageDuration`, `consecutiveWins`, `consecutiveLosses`, `recoveryFactor`
+
+**Signal Flow Orchestrator (`lib/contracts/signal-flow.ts`)** — new file:
+- `SignalFlowStage` union: 10 pipeline stages (market-analysis → tradingview-validation)
+- `SignalFlowStatus` union: pending/running/completed/failed/skipped
+- `SignalFlowStageResult<T>`: generic stage contract with timing, input/output, error, skippedReason
+- `MarketAnalysisOutput`: symbol, regime, volatility, sentiment, confidence, indicators
+- `AIAnalysisOutput`: symbol, recommendation, confidence, reasoning, riskLevel, targetPrice, stopLoss
+- `SignalGenerationOutput`: signalId, symbol, direction, entry, stop, targets, confidence, source, reasoning
+- `SignalValidationOutput`: signalId, passed, checks, riskAssessment, tradingViewAlignment (optional)
+- `SignalFlowPipelineResult`: full pipeline result with all stage outputs and portfolio impact
+- `SignalFlowOrchestrator`: executePipeline, getActivePipelines, getPipelineHistory, getPipelineById, cancelPipeline
+- `SignalFlowConfig`: skipTradingViewValidation, dryRun, confidence thresholds, allowedStages
+
+**Mock Signal Flow Orchestrator (`lib/mock/signal-flow.ts`)** — new file:
+- `createMockSignalFlowOrchestrator()` factory returning static fixture data
+- 3 seed pipeline fixtures: completed (BTCUSDT), hold (NIFTY), failed (INFY)
+- All 10 stages represented with realistic durations
+- TradingView validation stage skipped by default (optional)
+- `mockSignalFlowOrchestrator` singleton for tests and fixtures
+
+**Events (`lib/events.ts`)**:
+- `OmegaEventType`: add `signal.flow.started`, `signal.flow.stage.completed`, `signal.flow.completed`, `signal.flow.failed`
+- `OmegaEventType`: add `paper.lifecycle.order.created`, `paper.lifecycle.order.filled`, `paper.lifecycle.position.opened`, `paper.lifecycle.position.closed`, `paper.lifecycle.journal.entry`, `paper.lifecycle.performance.updated`
+- 10 typed event interfaces using `OmegaEventBase<TType, TPayload>` pattern
+- All 10 new events added to `OmegaEvent` union
+
+**Feature Flags (`lib/feature-flags.ts`, `lib/types/index.ts`)**:
+- `FeatureFlagName`: add `ENABLE_PAPER_LIFECYCLE`, `ENABLE_SIGNAL_FLOW`, `ENABLE_PAPER_ANALYTICS`
+- `FEATURE_FLAGS`: all 3 new flags default to `true`
+- Add `isPaperLifecycleEnabled()`, `isSignalFlowEnabled()`, `isPaperAnalyticsEnabled()` helpers
+
+**Analytics Contracts (`lib/contracts/analytics.ts`)**:
+- `PaperTradingPerformanceModel`: add `sharpeRatio`, `sortinoRatio`, `profitFactor`, `averageDuration`, `bestTrade`, `worstTrade`
+- `StrategyPerformanceModel`: add `totalTrades`, `profitFactor`, `sharpeRatio`, `averageDuration`
+- New `SignalFlowAnalyticsModel` interface: pipeline stats, stage success rates, TradingView alignment rate
+- `AnalyticsModelSet`: add optional `signalFlowAnalytics` field
+
+**Analytics Mock (`lib/mock/analytics-models.ts`)**:
+- Enriched strategy performance with totalTrades, profitFactor, sharpeRatio, averageDuration
+- Enriched paper trading performance with all 6 new optional fields
+- Added `signalFlowAnalytics` fixture with 10 stage success rates
+
+**TradingView Contracts (`lib/contracts/tradingview-testing.ts`)**:
+- `TradingViewSignalValidation`: add optional `signalFlowId`, `pipelineStage`, `confidence`
+- `TradingViewTestingContracts`: add optional `signalFlowValidation` array
+
+**TradingView Mock (`lib/mock/tradingview-contracts.ts`)**:
+- Added `signalFlowValidation` fixture with 2 entries linked to pipeline IDs
+
+**Persistence (`lib/persistence/index.ts`)**:
+- Export all 9 signal flow types from `lib/contracts/signal-flow.ts`
+
+**Tests**:
+- `__tests__/signal-flow.test.ts` (NEW): 20+ test cases for mock SignalFlowOrchestrator
+- `__tests__/feature-flags.test.ts` (UPDATED): 3 new flag tests, 3 new helper tests, flag count 23→26
+- `tests/smoke.test.tsx` (UPDATED): flag count 23→26, signal flow smoke test, paper trading backward-compat test
+
+### Changed
+
+- `package.json`: test script includes `__tests__/signal-flow.test.ts`
+- `README.md`: added `lib/contracts/signal-flow.ts` and `lib/mock/signal-flow.ts` to Current Structure; added SignalFlowOrchestrator mention
+- `docs/ARCHITECTURE.md`: added Signal Flow Pipeline section with mermaid diagram; added SignalFlowOrchestrator to module list
+- `docs/PROJECT_STATUS.md`: added Phase 8 completion section with deliverables
+- `NEXT_PHASE.md`: updated current status to Phase 8 Complete; updated next phase to Phase 8A Stabilization
+- `OMEGA_CONSTITUTION.md`: updated Future Phases section to reflect Phase 8 completion
+
+### Verified
+
+- `npm install`: PASS
+- `npm run lint`: PASS
+- `npm run test`: PASS
+- `npm run build`: PASS
+
+---
+
 ## 2026-06-16 - Phase 7 Completion Pass (Gap Closure)
 
 ### Added

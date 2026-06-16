@@ -99,25 +99,41 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 
 ## Future Phases
 
-### Phase 7: Persistence + TradingView Foundation
+### Phase 7: Persistence + TradingView Foundation (COMPLETE)
 - Generic `Repository<T>` / `Cache<T>` / `Snapshot` / `Session` contracts (mock-only)
 - Domain-specific repository, snapshot, history, and session contracts
 - TradingView Foundation module (mock-only placeholder, feature-flagged)
 - Expanded feature flags and event definitions
 
-### Phase 7A: Stabilization
-- Verify all Phase 7 contracts compile cleanly
+### Phase 7A: Stabilization (COMPLETE)
+- Verified all Phase 7 contracts compile cleanly
 - Lint-clean, zero `any`, tests cover all persistence and TradingView Foundation contracts
 - Governance docs present and linked from README
 - No broken imports, no orphaned exports
 
-### Phase 8: Knowledge Engine
+### Phase 8: Paper Trading Architecture Extension (COMPLETE)
+- Extended 6 paper trading interfaces with optional fields (zero breaking changes)
+- New `SignalFlowOrchestrator` typed AI signal pipeline (10 stages, mock-only)
+- Mock signal flow orchestrator with static fixture data
+- 10 new event types: 4 signal flow + 6 paper lifecycle
+- 3 new feature flags: `ENABLE_PAPER_LIFECYCLE`, `ENABLE_SIGNAL_FLOW`, `ENABLE_PAPER_ANALYTICS`
+- Extended analytics contracts with `SignalFlowAnalyticsModel`
+- Extended TradingView validation with signal flow linkage fields
+- 20+ new test cases for mock SignalFlowOrchestrator
+
+### Phase 8A: Stabilization
+- Verify all Phase 8 contracts compile cleanly
+- Lint-clean, zero `any`, tests cover all signal flow and paper trading extension contracts
+- Confirm backward compatibility of all Phase 8 optional field additions
+- No broken imports, no orphaned exports
+
+### Phase 9: Knowledge Engine
 - Knowledge ingestion pipeline contracts
 - Document parsing and chunking contracts
 - Vector store interface contracts (mock-only)
 - Knowledge retrieval API contracts
 
-### Phase 8A: Stabilization
+### Phase 9A: Stabilization
 - Knowledge Engine contract verification and test coverage
 
 ### Phase 9: Paper Trading Engine

@@ -1,8 +1,8 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 7 Complete
+## Current Status: Phase 8 Complete
 
-**Phase**: 7 - Persistence Architecture
+**Phase**: 8 - Paper Trading Architecture Extension
 **Status**: ✅ COMPLETE
 **Date**: 2026-06-16
 
@@ -10,7 +10,7 @@ Last updated: 2026-06-16
 
 ## Repository Status
 
-OMEGA AI is a stable, frontend-only Next.js App Router platform backed by mock data. The app has modular routes, reusable layout components, independently renderable feature modules, frontend API contracts, an adapter layer, typed mock services, HTTP adapter shells, domain models, state machines, event system, contract models, and now a complete persistence architecture layer for future backend integration.
+OMEGA AI is a stable, frontend-only Next.js App Router platform backed by mock data. The app has modular routes, reusable layout components, independently renderable feature modules, frontend API contracts, an adapter layer, typed mock services, HTTP adapter shells, domain models, state machines, event system, contract models, a complete persistence architecture layer, and now a full typed Signal Flow Orchestrator pipeline for future backend integration.
 
 No backend, database, authentication, broker API, exchange API, real AI provider, live market feed, real TradingView integration, secrets management, background worker, autonomous execution engine, or live risk engine is implemented.
 
@@ -72,7 +72,7 @@ flowchart LR
 - Zero TypeScript errors, zero lint errors, zero test failures.
 - CI/CD pipeline green.
 
-### Phase 7: Persistence Architecture (CURRENT - COMPLETE)
+### Phase 7: Persistence Architecture (COMPLETE)
 - Generic `Repository<T>` interface with CRUD, search, archive, snapshot operations.
 - `MockRepository<T>` implementation.
 - Domain-specific snapshot contracts (Trade, Portfolio, AI, Market, Strategy, PaperTrading, Analytics, Knowledge, System, TradingView).
@@ -84,6 +84,18 @@ flowchart LR
 - Expanded event definitions (TradingView, Persistence, Session, Cache events).
 - Expanded feature flags (TradingView, Persistence, Cache, Sessions).
 - Comprehensive tests for repository, cache, and feature flags.
+
+### Phase 8: Paper Trading Architecture Extension (CURRENT - COMPLETE)
+- Extended 6 paper trading interfaces with optional fields (zero breaking changes).
+- New `SignalFlowOrchestrator` typed AI signal pipeline (`lib/contracts/signal-flow.ts`).
+- Mock signal flow orchestrator with 3 seed pipeline fixtures (`lib/mock/signal-flow.ts`).
+- 10 new event types: 4 signal flow + 6 paper lifecycle.
+- 3 new feature flags: `ENABLE_PAPER_LIFECYCLE`, `ENABLE_SIGNAL_FLOW`, `ENABLE_PAPER_ANALYTICS`.
+- Extended analytics contracts: `SignalFlowAnalyticsModel`, enriched performance models.
+- Extended TradingView validation with signal flow linkage fields.
+- Signal flow types exported from `lib/persistence/index.ts`.
+- 20+ new test cases for mock SignalFlowOrchestrator.
+- Smoke test and feature flag test updates.
 
 ## Phase 7 Deliverables Summary
 
@@ -125,39 +137,32 @@ flowchart LR
 - `__tests__/persistence/cache.test.ts` - 10+ test cases for MockCache
 - `__tests__/feature-flags.test.ts` - Feature flag verification tests
 
-## Next Phase: Phase 7A - Stabilization
+## Next Phase: Phase 8A - Stabilization
 
 ### Mission
 
-Verify all Phase 7 contracts compile cleanly, are lint-clean, have no `any`, and are covered by tests. Ensure governance docs are present and linked from README. Confirm no broken imports, no orphaned exports, and no silent test failures.
+Verify all Phase 8 contracts compile cleanly, are lint-clean, have no `any`, and are covered by tests. Ensure all signal flow contracts are reachable from `lib/persistence/index.ts`. Confirm no broken imports, no orphaned exports, and no silent test failures.
 
 ### Deliverables
 
 1. **Contract Verification**
-   - All `lib/persistence/` interfaces compile with zero TypeScript errors
-   - All `lib/persistence/` exports are reachable from `lib/persistence/index.ts`
-   - No orphaned exports in any persistence module
-   - No `any` in any persistence file
+   - All `lib/contracts/signal-flow.ts` interfaces compile with zero TypeScript errors
+   - All signal flow exports are reachable from `lib/persistence/index.ts`
+   - All Phase 8 paper trading extensions are backward-compatible (no required fields added)
+   - No `any` in any Phase 8 file
 
 2. **Test Coverage**
-   - `Repository<T>` / `MockRepository<T>` — all CRUD, search, archive, snapshot operations covered
-   - `Cache<T>` / `MockCache<T>` — all operations and statistics covered
-   - `TradingViewFoundationModule` — flag-off (EmptyState) and flag-on (panels) render tests
-   - Feature flags — all 23 flags verified, all helpers verified, `__setFeatureFlagForTest` verified
+   - `SignalFlowOrchestrator` mock — all 6 methods covered (executePipeline, getActivePipelines, getPipelineHistory, getPipelineById, cancelPipeline, stage structure)
+   - Feature flags — all 26 flags verified, all 12 helpers verified
+   - Smoke test — signal flow orchestrator, paper trading backward-compat
    - All `__tests__/` files run in CI (node:test, not vitest)
 
-3. **Governance Docs**
-   - `CANONICAL_CONTRACTS.md` present and linked from README
-   - `ENGINEERING_RULES.md` present and linked from README
-   - `ARCHITECTURE_DECISIONS.md` present and linked from README
-   - All ADRs dated and complete
+3. **Technical Debt Review**
+   - Audit all Phase 8 optional fields for realistic mock data
+   - Verify `signalFlowAnalytics` fixture is consistent with pipeline fixture IDs
+   - Confirm `TradingViewSignalValidation.signalFlowId` values match pipeline fixture IDs
 
-4. **Naming Aliases**
-   - `TradingViewRepository` alias present in `lib/persistence/repositories.ts`
-   - `TradingViewSession` alias present in `lib/persistence/sessions.ts`
-   - All aliases documented with backward-compatibility comment
-
-5. **CI/CD**
+4. **CI/CD**
    - All four npm commands pass: `npm install`, `npm run lint`, `npm run test`, `npm run build`
    - Test runner includes all test files (explicit file list, not glob)
    - No silent test failures
@@ -171,7 +176,15 @@ Verify all Phase 7 contracts compile cleanly, are lint-clean, have no `any`, and
 - CI/CD pipeline green
 - OMEGA functions completely without TradingView
 - All existing tests continue passing
-- All governance docs present and linked
+- All Phase 8 contracts are backward-compatible
+
+### Technical Debt (Phase 8)
+
+- Signal flow mock uses static fixture data — no real pipeline execution
+- Paper trading lifecycle events are defined but not wired to any UI
+- `SignalFlowAnalyticsModel` fixture data is not derived from pipeline fixture data
+- `isPaperLifecycleEnabled()`, `isSignalFlowEnabled()`, `isPaperAnalyticsEnabled()` are not yet checked by any UI component
+- Extended paper trading fields (stopLoss, takeProfit, riskProfile) are not yet rendered in PaperTradingModule
 
 ---
 

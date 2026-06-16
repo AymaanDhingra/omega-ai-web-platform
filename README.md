@@ -50,9 +50,11 @@ npm run build
 - `adapters/` contains replaceable data adapters that currently point to mock services.
 - `components/` contains reusable UI components by domain.
 - `components/modules/` contains independently renderable OMEGA modules.
-- `lib/contracts/` contains backend, analytics, paper trading, and TradingView testing contracts.
+- `lib/contracts/` contains backend, analytics, paper trading, TradingView testing, and signal flow contracts.
+  - `lib/contracts/signal-flow.ts` — typed AI signal pipeline: `SignalFlowOrchestrator`, `SignalFlowPipelineResult`, stage output contracts.
 - `lib/types/` contains shared TypeScript interfaces.
 - `lib/mock/` contains mock data and the OMEGA module registry.
+  - `lib/mock/signal-flow.ts` — `createMockSignalFlowOrchestrator()` factory with static fixture pipelines.
 - `lib/data-sources.ts`, `lib/result.ts`, and `lib/events.ts` define integration readiness primitives.
 - `lib/feature-flags.ts` contains frontend feature gates.
 - `services/` contains mock service interfaces for future provider replacement.

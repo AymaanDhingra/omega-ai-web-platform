@@ -278,6 +278,41 @@ The placeholder data lives in `lib/mock/tradingview-testing.ts` and renders thro
 
 Phase 7 added a second TradingView module: `TradingViewFoundationModule` (`components/modules/TradingViewFoundationModule.tsx`). This is the Phase 7 foundation layer — distinct from the Phase 3 testing placeholder. It renders mock-only placeholders for chart, symbol sync, timeframe sync, watchlists, and status panels. It is feature-flagged behind `ENABLE_TRADINGVIEW` (default `false`) and renders an `EmptyState` when disabled. No real TradingView widget, script tag, iframe, or credential is used. The route is `/tradingview` and the module registry entry is `tradingview-foundation`.
 
+## Signal Flow Pipeline (Phase 8)
+
+The Signal Flow Orchestrator is a typed AI signal pipeline defined in `lib/contracts/signal-flow.ts`. It is mock-only — no real AI, broker, or TradingView connection is made. TradingView validation is optional and skipped by default.
+
+### Pipeline Stages
+
+```mermaid
+flowchart LR
+  MA["market-analysis"] --> AA["ai-analysis"]
+  AA --> SG["signal-generation"]
+  SG --> SV["signal-validation"]
+  SV --> OC["order-creation"]
+  OC --> PM["position-management"]
+  PM --> TE["trade-execution"]
+  TE --> PU["portfolio-update"]
+  PU --> AU["analytics-update"]
+  AU --> TV["tradingview-validation\n(optional, skipped by default)"]
+```
+
+Each stage produces a typed `SignalFlowStageResult<T>` with status, timing, input, output, error, and skippedReason.
+
+### Key Contracts
+
+- `SignalFlowOrchestrator` — `executePipeline`, `getActivePipelines`, `getPipelineHistory`, `getPipelineById`, `cancelPipeline`
+- `SignalFlowPipelineResult` — full pipeline result with all stage outputs and portfolio impact
+- `SignalFlowConfig` — `skipTradingViewValidation`, `dryRun`, confidence thresholds, `allowedStages`
+- `MarketAnalysisOutput`, `AIAnalysisOutput`, `SignalGenerationOutput`, `SignalValidationOutput` — typed stage outputs
+
+### Mock Implementation
+
+`lib/mock/signal-flow.ts` provides `createMockSignalFlowOrchestrator()` with static fixture data:
+- 3 seed pipeline results: completed (BTCUSDT), hold/no-signal (NIFTY), failed (INFY)
+- All 10 stages represented with realistic durations
+- `mockSignalFlowOrchestrator` singleton for tests and fixtures
+
 ## Analytics Placeholders
 
 Analytics are mock-only and include:
@@ -285,10 +320,11 @@ Analytics are mock-only and include:
 - AI Accuracy
 - Strategy Accuracy
 - Market Performance
-- Paper Trading Results
+- Paper Trading Results (extended with Sharpe, Sortino, Calmar, profit factor in Phase 8)
 - Signal Statistics
 - Portfolio Statistics
 - Historical Metrics
+- Signal Flow Analytics (Phase 8 — pipeline execution rates, stage success rates)
 
 ## Target System Architecture
 
