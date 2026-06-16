@@ -13,6 +13,7 @@ Knowledge → Market Intelligence → AI → SignalFlow → Paper Trading → An
 - [Recovery analysis](docs/RECOVERY_ANALYSIS.md)
 - [OMEGA Architecture](OMEGA_ARCHITECTURE.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [v1.0 Platform Consolidation](docs/V1_PLATFORM_CONSOLIDATION.md)
 - [Project status](docs/PROJECT_STATUS.md)
 - [Changelog](CHANGELOG.md)
 - [Next phase handoff](NEXT_PHASE.md)

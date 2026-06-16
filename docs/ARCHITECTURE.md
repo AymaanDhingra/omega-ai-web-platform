@@ -26,6 +26,8 @@ Knowledge
 
 The Experience Engine closes the loop by converting paper trading outcomes into structured lessons, mock patterns, and knowledge updates. It does not train AI models and it does not create a parallel decision pipeline.
 
+The v1.0 platform consolidation audit is documented in `docs/V1_PLATFORM_CONSOLIDATION.md`.
+
 ## Current Runtime Architecture
 
 ```mermaid

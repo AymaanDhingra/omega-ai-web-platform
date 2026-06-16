@@ -2,6 +2,35 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - OMEGA v1.0 Platform Consolidation
+
+### Added
+
+- Added `docs/V1_PLATFORM_CONSOLIDATION.md` to document the repository, architecture, core loop, TradingView, Experience, and documentation audits.
+- Reframed the repository as OMEGA v1.0 Core Platform after Phase 11.
+- Documented the OMEGA Core Rule: every future feature must strengthen the existing feedback loop; SignalFlow remains central orchestration; parallel decision systems are prohibited.
+
+### Audited
+
+- Knowledge Layer
+- Market Intelligence
+- AI integration
+- SignalFlow
+- Paper Trading
+- Analytics
+- Experience Engine
+- TradingView Foundation
+- Persistence
+- Feature Flags
+- Governance Documents
+- Documentation
+
+### Verified
+
+- CI Status: Unavailable.
+- Reason: Infrastructure limitation; the pipeline reports failed without failed jobs or downstream pipelines.
+- Local verification: Required before tagging v1.0.0.
+
 ## 2026-06-16 - Phase 11 Experience Engine Complete
 
 ### Added
