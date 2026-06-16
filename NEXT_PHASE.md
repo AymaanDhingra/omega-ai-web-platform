@@ -83,6 +83,8 @@ Phase 12 should focus on Advanced Analytics after v1.0 is locally verified and t
 - Feature flag smoke test updated to the canonical 22-flag set.
 - Cache `setMany()` implementation updated for Map iteration compatibility without changing public contracts.
 - Knowledge repository search helper renamed to avoid overriding the generic repository `search(Query<T>)` contract.
+- News repository search helper renamed to avoid overriding the generic repository `search(Query<T>)` contract.
+- Specialized repositories audited for canonical `Repository<T>` search compatibility.
 
 ## Completed Phases
 

@@ -228,7 +228,7 @@ export interface NewsRepository extends Repository<NewsEvent> {
   findBySource(source: string): Promise<RepositoryResult<NewsEvent[]>>;
   findByImpact(impact: NewsEvent["impact"]): Promise<RepositoryResult<NewsEvent[]>>;
   findRecent(limit: number): Promise<RepositoryResult<NewsEvent[]>>;
-  search(query: string): Promise<RepositoryResult<NewsEvent[]>>;
+  searchNews(query: string): Promise<RepositoryResult<NewsEvent[]>>;
 }
 
 /**
