@@ -55,7 +55,7 @@ export const analyticsPatterns: AnalyticsPattern[] = [
     description: "Signal confidence around 65-75% aligns with paper validation quality in mock data.",
     occurrences: 7,
     confidence: 0.71,
-    sources: ["signalflow", "paper-trading", "analytics" as never],
+    sources: ["signalflow", "paper-trading"],
     metadata: { execution: false }
   },
   {
