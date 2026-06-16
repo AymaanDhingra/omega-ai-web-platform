@@ -141,6 +141,9 @@ export interface TradeDecision {
   executionApproved: boolean;
 }
 
+// Trade is an alias for TradeLifecycle for backward compatibility
+export type Trade = TradeLifecycle;
+
 export interface TradeValidation {
   id: string;
   trade: TradeLifecycle;
