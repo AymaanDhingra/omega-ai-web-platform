@@ -6,39 +6,70 @@
  */
 
 import { getDataSource } from "../../lib/data-sources";
-import type { DataSourceDescriptor } from "../../lib/data-sources";
-import type { Portfolio } from "../../lib/types";
+import type { DashboardMetric, PaperTrade, Portfolio } from "../../lib/types";
 import { getAdapterFactory } from "../../lib/adapter-factory";
-import { mockPortfolioAdapter } from "../portfolio-adapter";
-
-export interface PortfolioAdapter {
-  source: DataSourceDescriptor;
-  getSummary(): Promise<Portfolio>;
-}
+import { mockPortfolioAdapter, type PortfolioAdapter } from "../portfolio-adapter";
 
 /**
  * HTTP-based portfolio adapter
  * 
- * Calls /api/v1/portfolio/summary
+ * Calls /api/v1/portfolio/*
  * Falls back to mock adapter if HTTP is disabled or fails
  */
 export const httpPortfolioAdapter: PortfolioAdapter = {
   source: getDataSource("rest"),
 
-  async getSummary(): Promise<Portfolio> {
+  async getDashboardMetrics(): Promise<DashboardMetric[]> {
     const factory = getAdapterFactory();
     if (!factory.shouldUseHttp()) {
-      return mockPortfolioAdapter.getSummary();
+      return mockPortfolioAdapter.getDashboardMetrics();
     }
 
     try {
       const client = factory.createHttpClient();
-      const response = await client.get<Portfolio>("/api/v1/portfolio/summary");
-      return response;
+      const response = await client.get<{ items: DashboardMetric[] }>("/api/v1/portfolio/metrics");
+      return response.items;
     } catch (error) {
       if (factory.shouldUseMockFallback()) {
-        console.warn("Portfolio summary HTTP request failed, falling back to mock", error);
-        return mockPortfolioAdapter.getSummary();
+        console.warn("Portfolio metrics HTTP request failed, falling back to mock", error);
+        return mockPortfolioAdapter.getDashboardMetrics();
+      }
+      throw error;
+    }
+  },
+
+  async getPortfolio(): Promise<Portfolio> {
+    const factory = getAdapterFactory();
+    if (!factory.shouldUseHttp()) {
+      return mockPortfolioAdapter.getPortfolio();
+    }
+
+    try {
+      const client = factory.createHttpClient();
+      return await client.get<Portfolio>("/api/v1/portfolio");
+    } catch (error) {
+      if (factory.shouldUseMockFallback()) {
+        console.warn("Portfolio HTTP request failed, falling back to mock", error);
+        return mockPortfolioAdapter.getPortfolio();
+      }
+      throw error;
+    }
+  },
+
+  async getPaperTrades(): Promise<PaperTrade[]> {
+    const factory = getAdapterFactory();
+    if (!factory.shouldUseHttp()) {
+      return mockPortfolioAdapter.getPaperTrades();
+    }
+
+    try {
+      const client = factory.createHttpClient();
+      const response = await client.get<{ items: PaperTrade[] }>("/api/v1/portfolio/paper-trades");
+      return response.items;
+    } catch (error) {
+      if (factory.shouldUseMockFallback()) {
+        console.warn("Paper trades HTTP request failed, falling back to mock", error);
+        return mockPortfolioAdapter.getPaperTrades();
       }
       throw error;
     }
