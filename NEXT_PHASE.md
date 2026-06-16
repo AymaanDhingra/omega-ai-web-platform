@@ -1,8 +1,8 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 6A Complete
+## Current Status: Phase 7 Complete
 
-**Phase**: 6A - Stabilization & Contract Governance
+**Phase**: 7 - Persistence Architecture
 **Status**: ✅ COMPLETE
 **Date**: 2026-06-16
 
@@ -10,7 +10,7 @@ Last updated: 2026-06-16
 
 ## Repository Status
 
-OMEGA AI is a stable, frontend-only Next.js App Router platform backed by mock data. The app has modular routes, reusable layout components, independently renderable feature modules, frontend API contracts, an adapter layer, typed mock services, HTTP adapter shells, domain models, state machines, event system, and contract models for future backend integration.
+OMEGA AI is a stable, frontend-only Next.js App Router platform backed by mock data. The app has modular routes, reusable layout components, independently renderable feature modules, frontend API contracts, an adapter layer, typed mock services, HTTP adapter shells, domain models, state machines, event system, contract models, and now a complete persistence architecture layer for future backend integration.
 
 No backend, database, authentication, broker API, exchange API, real AI provider, live market feed, real TradingView integration, secrets management, background worker, autonomous execution engine, or live risk engine is implemented.
 
@@ -32,6 +32,14 @@ flowchart LR
   Adapter --> HttpAdapter["adapters/http/* (disabled)"]
   MockService --> Mock["lib/mock/* fixture"]
   HttpAdapter --> HttpClient["lib/http/client.ts"]
+  
+  subgraph Persistence["lib/persistence/"]
+    Repository["Repository<T>"]
+    Snapshots["Snapshots"]
+    History["History"]
+    Sessions["Sessions"]
+    Cache["Cache<T>"]
+  end
 ```
 
 ## Completed Phases
@@ -56,7 +64,7 @@ flowchart LR
 - State machines for Signal, Trade, Paper Trade, Portfolio.
 - Event system with typed domain events and mock dispatcher.
 
-### Phase 6A: Stabilization (CURRENT - COMPLETE)
+### Phase 6A: Stabilization
 - HTTP adapter alignment with mock adapter interfaces.
 - Fixed all 8 HTTP adapters to implement canonical mock interfaces.
 - Added Trade type alias for backward compatibility.
@@ -64,71 +72,92 @@ flowchart LR
 - Zero TypeScript errors, zero lint errors, zero test failures.
 - CI/CD pipeline green.
 
-## Phase 6A Stabilization Summary
+### Phase 7: Persistence Architecture (CURRENT - COMPLETE)
+- Generic `Repository<T>` interface with CRUD, search, archive, snapshot operations.
+- `MockRepository<T>` implementation.
+- Domain-specific snapshot contracts (Trade, Portfolio, AI, Market, Strategy, PaperTrading, Analytics, Knowledge, System, TradingView).
+- History models (Trade, Signal, Portfolio, Strategy, AI, Knowledge, Analytics, Paper).
+- Session abstractions (Trading, AI, PaperTrading, Testing, Validation, TradingView).
+- Cache abstractions (Market, Portfolio, Knowledge, Analytics, AIState, Signal).
+- Domain-specific repository contracts for all entities.
+- TradingView persistence contracts (optional).
+- Expanded event definitions (TradingView, Persistence, Session, Cache events).
+- Expanded feature flags (TradingView, Persistence, Cache, Sessions).
+- Comprehensive tests for repository, cache, and feature flags.
 
-### HTTP Adapters Fixed
+## Phase 7 Deliverables Summary
 
-| Adapter | Methods Added/Fixed |
-|---------|--------------------|
-| analytics-adapter | `getAnalyticsGroups()`, `getAnalyticsModelSet()` |
-| news-adapter | Renamed `getNews()` → `getNewsEvents()` |
-| portfolio-adapter | `getDashboardMetrics()`, `getPortfolio()`, `getPaperTrades()` |
-| ai-system-adapter | `getSystemStatuses()`, `getTradingModes()`, `getChatCommands()`, `getModules()` |
-| strategy-adapter | `getTradeSignals()`, `getBacktestMetrics()` |
-| paper-trading-adapter | All 7 methods implemented |
-| tradingview-testing-adapter | All 7 methods implemented |
-| system-adapter | `getModules()`, `getSystemStatuses()`, `getBrokerConnections()`, `getRiskPermissions()`, `getSystemLogs()`, `getFeatureFlags()` |
+### Core Persistence (`lib/persistence/`)
 
-### Domain Fixes
+| File | Description |
+|------|-------------|
+| `repository.ts` | Generic Repository<T> interface, Query, Filter, Sort, Pagination, Snapshot, HistoryEntry |
+| `mock-repository.ts` | MockRepository<T> implementation |
+| `snapshots.ts` | Domain-specific snapshot contracts |
+| `history.ts` | Domain-specific history models |
+| `sessions.ts` | Session abstractions and SessionManager |
+| `cache.ts` | Cache<T> interface and MockCache<T> implementation |
+| `repositories.ts` | Domain-specific repository contracts |
+| `tradingview.ts` | TradingView persistence contracts |
+| `index.ts` | Module exports |
 
-- Added `Trade` type alias to `lib/domains/trading/types.ts` for backward compatibility with event system.
-- Fixed `HttpError` construction in `lib/http/client.ts` using `Object.assign()` pattern.
+### Feature Flags Added
 
-### Contract Governance Rule
+| Flag | Default | Description |
+|------|---------|-------------|
+| `ENABLE_TRADINGVIEW_CHARTS` | `false` | TradingView chart integration (optional) |
+| `ENABLE_TRADINGVIEW_WATCHLISTS` | `false` | TradingView watchlist sync (optional) |
+| `ENABLE_TRADINGVIEW_VALIDATION` | `false` | TradingView signal validation (optional) |
+| `ENABLE_PERSISTENCE` | `true` | Persistence layer |
+| `ENABLE_CACHE` | `true` | Caching layer |
+| `ENABLE_SESSIONS` | `true` | Session management |
 
-**Mock adapters are the canonical source of truth.**
+### Events Added
 
-- HTTP adapters MUST implement mock adapter interfaces exactly.
-- Future providers MUST implement identical contracts.
-- Consumer pages NEVER depend on provider implementations.
-- Provider swaps MUST NOT require page rewrites.
+- TradingView: `connected`, `disconnected`, `watchlist.updated`, `chart.updated`, `validation.completed`, `alert.triggered`
+- Persistence: `snapshot.created`, `entity.archived`, `entity.restored`
+- Session: `started`, `paused`, `resumed`, `completed`, `cancelled`
+- Cache: `invalidated`, `refreshed`
 
-## Next Phase: Phase 7 - Persistence Contracts
+### Tests Added
+
+- `__tests__/persistence/repository.test.ts` - 20+ test cases for MockRepository
+- `__tests__/persistence/cache.test.ts` - 10+ test cases for MockCache
+- `__tests__/feature-flags.test.ts` - Feature flag verification tests
+
+## Next Phase: Phase 8 - TradingView Testing Layer
 
 ### Mission
 
-Build persistence contract interfaces. Do NOT build databases, authentication, backend services, broker integrations, or live providers. Create architecture only.
+Build the TradingView testing layer UI components and integration. TradingView remains OPTIONAL - OMEGA must function completely without it.
 
 ### Deliverables
 
-1. **Repository Interfaces**
-   - Generic `Repository<T>` interface
-   - Methods: `save()`, `update()`, `delete()`, `find()`, `search()`, `archive()`, `snapshot()`
-   - Mock implementations only
+1. **TradingView Module Components**
+   - Embedded Chart Placeholder component
+   - Symbol/Timeframe Synchronization UI
+   - Watchlist Management UI
+   - Chart Status Display
+   - Connection Status Display
+   - Testing Status Dashboard
 
-2. **Snapshot Contracts**
-   - TradeSnapshot, PortfolioSnapshot, AISnapshot, MarketSnapshot
-   - StrategySnapshot, PaperTradingSnapshot, AnalyticsSnapshot
-   - KnowledgeSnapshot, SystemSnapshot
+2. **TradingView Testing Page**
+   - Signal comparison view
+   - Alert monitoring view
+   - Validation results view
+   - Paper trading comparison view
+   - Session management view
 
-3. **History Models**
-   - TradeHistory, PortfolioHistory, SignalHistory, AIHistory
-   - PaperTradingHistory, StrategyHistory, KnowledgeHistory, AnalyticsHistory
+3. **Feature Flag Integration**
+   - Conditional rendering based on TradingView flags
+   - Graceful degradation when TradingView disabled
+   - Clear messaging when features unavailable
 
-4. **Session Abstractions**
-   - AISession, TradingSession, PaperTradingSession
-   - TestingSession, StrategySession, ValidationSession
-
-5. **Cache Abstractions**
-   - MarketCache, PortfolioCache, KnowledgeCache
-   - AnalyticsCache, AIStateCache, SignalCache
-
-6. **TradingView Persistence**
-   - Signal Validation persistence
-   - Paper Trading Comparison persistence
-   - Alert History persistence
-   - Historical Validation persistence
-   - Testing Sessions persistence
+4. **Mock TradingView Service**
+   - Simulated chart data
+   - Simulated watchlist sync
+   - Simulated signal validation
+   - Simulated alert triggers
 
 ### Success Criteria
 
@@ -137,6 +166,7 @@ Build persistence contract interfaces. Do NOT build databases, authentication, b
 - Zero test failures
 - Successful build
 - CI/CD pipeline green
+- OMEGA functions completely without TradingView
 - All existing tests continue passing
 - Documentation updated
 
@@ -149,6 +179,7 @@ Build persistence contract interfaces. Do NOT build databases, authentication, b
 - TradingView testing is simulated and does not connect to TradingView.
 - Paper trading contracts exist, but there is no persistent ledger.
 - Live trading remains intentionally locked.
+- Persistence layer is contracts only - no actual database.
 
 ## Engineering Rules
 
@@ -165,6 +196,8 @@ Build persistence contract interfaces. Do NOT build databases, authentication, b
 11. Always update documentation.
 12. Always update NEXT_PHASE.md.
 13. Always leave repository healthier than found.
+14. **TradingView must remain OPTIONAL.**
+15. **Mock adapters are the canonical source of truth.**
 
 ## Build Verification
 
@@ -174,4 +207,4 @@ Latest completed verification on 2026-06-16:
 - `npm run lint`: passed
 - `npm run test`: passed
 - `npm run build`: passed
-- CI/CD Pipeline #28: SUCCESS
+- CI/CD Pipeline: SUCCESS
