@@ -2,6 +2,18 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 13A Platform Stabilization and Consolidation
+
+### Added
+
+- Added `OMEGA_ARCHITECTURE.md` as the permanent platform architecture anchor.
+- Added `docs/PHASE_13A_PLATFORM_STABILIZATION.md` documenting governance, architecture, SignalFlow, Decision Intelligence, repository, feature flag, and TradingView audits.
+- Added smoke coverage for architecture invariants prohibiting `DecisionRepository`, `ValidationEngine`, `RepositoryV2`, and parallel decision systems.
+
+### Verified
+
+- Local verification required: `npm install`, `npm run lint`, `npm run test`, `npm run build`.
+
 ## 2026-06-16 - Phase 7 Persistence Architecture Complete
 
 ### Added

@@ -1,8 +1,8 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 7 Complete
+## Current Status: Phase 13A Complete
 
-**Phase**: 7 - Persistence Architecture
+**Phase**: 13A - Platform Stabilization and Consolidation
 **Status**: ✅ COMPLETE
 **Date**: 2026-06-16
 
@@ -41,6 +41,16 @@ flowchart LR
     Cache["Cache<T>"]
   end
 ```
+
+## Permanent OMEGA Rule
+
+OMEGA does not attempt to make more decisions. OMEGA attempts to make better understood, better governed, and better validated decisions.
+
+SignalFlow is the sole decision authority. All other systems contribute context, observations, analytics, experience, knowledge, explanations, or validation. Parallel decision systems are prohibited.
+
+## Recommended Next Phase
+
+Phase 14 should focus on Context Optimization. It should improve how existing context is organized and delivered to SignalFlow. It must not create a ValidationEngine, DecisionRepository, execution path, external AI provider dependency, model training system, broker integration, or parallel decision pipeline.
 
 ## Completed Phases
 

@@ -1,11 +1,15 @@
 # OMEGA AI Web Platform
 
-Dashboard-first prototype for the autonomous multi-market trading platform spec.
+OMEGA is a provider-independent trading operating system that improves decision context around SignalFlow through accumulated knowledge, market intelligence, analytics, and experience.
+
+SignalFlow is the sole decision authority. All other systems contribute context, observations, analytics, experience, knowledge, explanations, or validation.
 
 ## Recovery Baseline
 
 - [Recovery analysis](docs/RECOVERY_ANALYSIS.md)
+- [OMEGA Architecture](OMEGA_ARCHITECTURE.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Phase 13A Platform Stabilization](docs/PHASE_13A_PLATFORM_STABILIZATION.md)
 - [Project status](docs/PROJECT_STATUS.md)
 - [Changelog](CHANGELOG.md)
 - [Next phase handoff](NEXT_PHASE.md)

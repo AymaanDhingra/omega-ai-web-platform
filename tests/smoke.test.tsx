@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { test } from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import AdminPage from "../app/admin/page";
@@ -137,6 +139,41 @@ test("feature flags expose all frontend module gates", () => {
   assert.equal(flags.ENABLE_PERSISTENCE, true);
   assert.equal(flags.ENABLE_CACHE, true);
   assert.equal(flags.ENABLE_SESSIONS, true);
+});
+
+test("architecture invariants prohibit parallel decision systems", () => {
+  const root = process.cwd();
+  const architecturePath = join(root, "OMEGA_ARCHITECTURE.md");
+
+  assert.equal(existsSync(architecturePath), true);
+  const architecture = readFileSync(architecturePath, "utf8");
+  assert.match(architecture, /SignalFlow is the sole decision authority/);
+  assert.match(architecture, /Parallel decision systems are prohibited/);
+
+  const sourceRoots = ["api", "adapters", "lib", "services"];
+  const files: string[] = [];
+
+  const collectFiles = (directory: string) => {
+    for (const entry of readdirSync(directory)) {
+      const fullPath = join(directory, entry);
+      const stats = statSync(fullPath);
+      if (stats.isDirectory()) {
+        collectFiles(fullPath);
+      } else if (/\.(ts|tsx)$/.test(fullPath)) {
+        files.push(fullPath);
+      }
+    }
+  };
+
+  for (const sourceRoot of sourceRoots) {
+    collectFiles(join(root, sourceRoot));
+  }
+
+  const source = files.map((file) => readFileSync(file, "utf8")).join("\n");
+  assert.equal(source.includes("interface DecisionRepository"), false);
+  assert.equal(source.includes("class DecisionRepository"), false);
+  assert.equal(source.includes("ValidationEngine"), false);
+  assert.equal(source.includes("RepositoryV2"), false);
 });
 
 test("mock services respond with dashboard-ready data", async () => {

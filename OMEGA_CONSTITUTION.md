@@ -15,6 +15,16 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 7. **No Breaking Changes** - Incremental development only.
 8. **Testable** - All code is testable with comprehensive test coverage.
 
+## OMEGA Identity
+
+OMEGA does not attempt to make more decisions. OMEGA attempts to make better understood, better governed, and better validated decisions.
+
+SignalFlow is the sole decision authority.
+
+All other systems contribute context, observations, analytics, experience, knowledge, explanations, or validation.
+
+Parallel decision systems are prohibited.
+
 ## Core Principles
 
 ### 1. Domain-Driven Design

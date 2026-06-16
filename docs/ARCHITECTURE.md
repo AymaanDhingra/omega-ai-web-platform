@@ -4,6 +4,12 @@ Last updated: 2026-06-16
 
 This document describes the current architecture and the target architecture for the OMEGA AI platform. Current implementation is a modular multi-page frontend platform backed by typed API contracts, adapter interfaces, mock services, and mock fixtures. Backend, persistence, AI, data, TradingView, and trading integrations are planned boundaries, not active runtime modules yet.
 
+## Platform Governance
+
+OMEGA is governed by a single decision authority: SignalFlow. Knowledge, Market Intelligence, AI, Decision Intelligence, Paper Trading, Analytics, Experience, and TradingView contribute context, validation, explanations, measurements, or observations only.
+
+No parallel decision systems, duplicate orchestration paths, or hidden execution paths are permitted.
+
 ## Current Runtime Architecture
 
 ```mermaid
