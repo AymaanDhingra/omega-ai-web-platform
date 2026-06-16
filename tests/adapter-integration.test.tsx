@@ -33,7 +33,7 @@ describe("Adapter Integration", () => {
     const news = await mockNewsAdapter.getNews();
     assert(Array.isArray(news));
 
-    const analytics = await mockAnalyticsAdapter.getAnalytics();
+    const analytics = await mockAnalyticsAdapter.getAnalyticsGroups();
     assert(Array.isArray(analytics));
 
     const accounts = await mockPaperTradingAdapter.getAccounts();

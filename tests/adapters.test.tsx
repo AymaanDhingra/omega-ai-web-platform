@@ -113,12 +113,12 @@ describe("Adapter Interface Compatibility", () => {
 
   it("Analytics adapters implement same interface", async () => {
     assert(mockAnalyticsAdapter.source !== undefined);
-    assert(typeof mockAnalyticsAdapter.getAnalytics === "function");
+    assert(typeof mockAnalyticsAdapter.getAnalyticsGroups === "function");
 
     assert(httpAnalyticsAdapter.source !== undefined);
-    assert(typeof httpAnalyticsAdapter.getAnalytics === "function");
+    assert(typeof httpAnalyticsAdapter.getAnalyticsGroups === "function");
 
-    const mockAnalytics = await mockAnalyticsAdapter.getAnalytics();
+    const mockAnalytics = await mockAnalyticsAdapter.getAnalyticsGroups();
     assert(Array.isArray(mockAnalytics));
   });
 

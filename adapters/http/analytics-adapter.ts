@@ -13,7 +13,7 @@ import { mockAnalyticsAdapter } from "../analytics-adapter";
 
 export interface AnalyticsAdapter {
   source: DataSourceDescriptor;
-  getAnalytics(): Promise<AnalyticsGroup[]>;
+  getAnalyticsGroups(): Promise<AnalyticsGroup[]>;
 }
 
 /**
@@ -25,10 +25,10 @@ export interface AnalyticsAdapter {
 export const httpAnalyticsAdapter: AnalyticsAdapter = {
   source: getDataSource("rest"),
 
-  async getAnalytics(): Promise<AnalyticsGroup[]> {
+  async getAnalyticsGroups(): Promise<AnalyticsGroup[]> {
     const factory = getAdapterFactory();
     if (!factory.shouldUseHttp()) {
-      return mockAnalyticsAdapter.getAnalytics();
+      return mockAnalyticsAdapter.getAnalyticsGroups();
     }
 
     try {
@@ -38,7 +38,7 @@ export const httpAnalyticsAdapter: AnalyticsAdapter = {
     } catch (error) {
       if (factory.shouldUseMockFallback()) {
         console.warn("Analytics HTTP request failed, falling back to mock", error);
-        return mockAnalyticsAdapter.getAnalytics();
+        return mockAnalyticsAdapter.getAnalyticsGroups();
       }
       throw error;
     }
