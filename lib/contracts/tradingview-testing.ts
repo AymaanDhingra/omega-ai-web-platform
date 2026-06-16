@@ -15,6 +15,10 @@ export interface TradingViewSignalValidation {
   comparisonSignal: Signal;
   result: "Aligned" | "Diverged" | "Pending";
   notes: string;
+  // Phase 8 extensions — all optional, backward-compatible
+  signalFlowId?: string;
+  pipelineStage?: string;
+  confidence?: number;
 }
 
 export interface TradingViewPaperComparison {
@@ -47,4 +51,6 @@ export interface TradingViewTestingContracts {
   paperComparison: TradingViewPaperComparison[];
   alertStatus: TradingViewAlertStatus[];
   historicalValidation: TradingViewHistoricalValidation[];
+  // Phase 8 extension — optional, backward-compatible
+  signalFlowValidation?: TradingViewSignalValidation[];
 }

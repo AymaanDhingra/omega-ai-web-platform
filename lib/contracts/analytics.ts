@@ -16,6 +16,11 @@ export interface StrategyPerformanceModel {
   expectancy: string;
   drawdown: string;
   status: "Mock" | "Ready" | "Needs Data";
+  // Phase 8 extensions — all optional, backward-compatible
+  totalTrades?: number;
+  profitFactor?: string;
+  sharpeRatio?: string;
+  averageDuration?: string;
 }
 
 export interface AIAccuracyModel {
@@ -40,6 +45,13 @@ export interface PaperTradingPerformanceModel {
   pnl: string;
   winRate: string;
   maxDrawdown: string;
+  // Phase 8 extensions — all optional, backward-compatible
+  sharpeRatio?: string;
+  sortinoRatio?: string;
+  profitFactor?: string;
+  averageDuration?: string;
+  bestTrade?: string;
+  worstTrade?: string;
 }
 
 export interface PortfolioMetricsModel {
@@ -58,6 +70,23 @@ export interface HistoricalMetricsModel {
   tradeCount: number;
 }
 
+/**
+ * Signal flow pipeline analytics model.
+ * Tracks pipeline execution rates, stage success rates, and TradingView alignment.
+ * Phase 8: Paper Trading Architecture Extension.
+ */
+export interface SignalFlowAnalyticsModel {
+  id: string;
+  totalPipelines: number;
+  completedPipelines: number;
+  failedPipelines: number;
+  averageDuration: string;
+  averageConfidence: string;
+  stageSuccessRates: { stage: string; rate: string }[];
+  tradingViewAlignmentRate?: string;
+  status: 'Mock' | 'Ready' | 'Needs Data';
+}
+
 export interface AnalyticsModelSet {
   strategyPerformance: StrategyPerformanceModel[];
   aiAccuracy: AIAccuracyModel[];
@@ -65,4 +94,6 @@ export interface AnalyticsModelSet {
   paperTradingPerformance: PaperTradingPerformanceModel[];
   portfolioMetrics: PortfolioMetricsModel[];
   historicalMetrics: HistoricalMetricsModel[];
+  // Phase 8 extension — optional, backward-compatible
+  signalFlowAnalytics?: SignalFlowAnalyticsModel[];
 }

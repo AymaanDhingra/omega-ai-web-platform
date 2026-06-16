@@ -61,5 +61,30 @@ export const tradingViewTestingContracts: TradingViewTestingContracts = {
   historicalValidation: [
     { id: "historical-btc", symbol: "BTCUSDT", sampleSize: 120, matchRate: "64%", status: "Mock" },
     { id: "historical-nifty", symbol: "NIFTY", sampleSize: 90, matchRate: "59%", status: "Mock" }
-  ]
+  ],
+  // Phase 8: Signal flow pipeline validation fixtures
+  signalFlowValidation: [
+    {
+      id: "sf-validation-btc-001",
+      symbol: "BTCUSDT",
+      omegaSignal: "Buy",
+      comparisonSignal: "Buy",
+      result: "Aligned",
+      notes: "Signal flow pipeline validation — mock only. TradingView validation stage was skipped.",
+      signalFlowId: "pipeline-mock-001",
+      pipelineStage: "tradingview-validation",
+      confidence: 0.71,
+    },
+    {
+      id: "sf-validation-nifty-001",
+      symbol: "NIFTY",
+      omegaSignal: "Neutral",
+      comparisonSignal: "Neutral",
+      result: "Aligned",
+      notes: "Signal flow pipeline validation — mock only. Hold recommendation aligned.",
+      signalFlowId: "pipeline-mock-002",
+      pipelineStage: "tradingview-validation",
+      confidence: 0.61,
+    },
+  ],
 };

@@ -133,3 +133,17 @@ export type {
   TVTestingSession,
   TVPersistenceRepository
 } from "./tradingview";
+
+// Signal flow contracts (Phase 8)
+export type {
+  SignalFlowStage,
+  SignalFlowStatus,
+  SignalFlowStageResult,
+  MarketAnalysisOutput,
+  AIAnalysisOutput,
+  SignalGenerationOutput,
+  SignalValidationOutput,
+  SignalFlowPipelineResult,
+  SignalFlowOrchestrator,
+  SignalFlowConfig
+} from "../contracts/signal-flow";

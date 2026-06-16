@@ -1,5 +1,6 @@
 import type { AIBrain, MarketAsset, NewsEvent, Portfolio, Strategy, TradeSignal } from "./types";
-import type { PaperOrder, PaperPosition, TradeJournalEntry } from "./contracts/paper-trading";
+import type { PaperOrder, PaperPosition, TradeJournalEntry, PaperPerformanceMetrics } from "./contracts/paper-trading";
+import type { SignalFlowPipelineResult, SignalFlowStageResult } from "./contracts/signal-flow";
 
 export type OmegaEventType =
   // Existing events
@@ -30,7 +31,19 @@ export type OmegaEventType =
   | "session.cancelled"
   // Cache events
   | "cache.invalidated"
-  | "cache.refreshed";
+  | "cache.refreshed"
+  // Signal flow pipeline events (Phase 8)
+  | "signal.flow.started"
+  | "signal.flow.stage.completed"
+  | "signal.flow.completed"
+  | "signal.flow.failed"
+  // Paper trading lifecycle events (Phase 8)
+  | "paper.lifecycle.order.created"
+  | "paper.lifecycle.order.filled"
+  | "paper.lifecycle.position.opened"
+  | "paper.lifecycle.position.closed"
+  | "paper.lifecycle.journal.entry"
+  | "paper.lifecycle.performance.updated";
 
 export interface OmegaEventBase<TType extends OmegaEventType, TPayload> {
   id: string;
@@ -161,6 +174,65 @@ export type CacheRefreshedEvent = OmegaEventBase<"cache.refreshed", {
   duration: number;
 }>;
 
+// Signal flow pipeline events (Phase 8)
+export type SignalFlowStartedEvent = OmegaEventBase<"signal.flow.started", {
+  pipelineId: string;
+  symbol: string;
+  startedAt: string;
+  config?: Record<string, unknown>;
+}>;
+
+export type SignalFlowStageCompletedEvent = OmegaEventBase<"signal.flow.stage.completed", {
+  pipelineId: string;
+  symbol: string;
+  stage: SignalFlowStageResult;
+}>;
+
+export type SignalFlowCompletedEvent = OmegaEventBase<"signal.flow.completed", {
+  pipelineId: string;
+  symbol: string;
+  result: SignalFlowPipelineResult;
+}>;
+
+export type SignalFlowFailedEvent = OmegaEventBase<"signal.flow.failed", {
+  pipelineId: string;
+  symbol: string;
+  failedStage?: string;
+  error: string;
+}>;
+
+// Paper trading lifecycle events (Phase 8)
+export type PaperLifecycleOrderCreatedEvent = OmegaEventBase<"paper.lifecycle.order.created", {
+  order: PaperOrder;
+  accountId: string;
+}>;
+
+export type PaperLifecycleOrderFilledEvent = OmegaEventBase<"paper.lifecycle.order.filled", {
+  order: PaperOrder;
+  filledPrice: string;
+  filledAt: string;
+}>;
+
+export type PaperLifecyclePositionOpenedEvent = OmegaEventBase<"paper.lifecycle.position.opened", {
+  position: PaperPosition;
+  orderId: string;
+}>;
+
+export type PaperLifecyclePositionClosedEvent = OmegaEventBase<"paper.lifecycle.position.closed", {
+  position: PaperPosition;
+  closedAt: string;
+  realizedPnl: string;
+}>;
+
+export type PaperLifecycleJournalEntryEvent = OmegaEventBase<"paper.lifecycle.journal.entry", {
+  entry: TradeJournalEntry;
+}>;
+
+export type PaperLifecyclePerformanceUpdatedEvent = OmegaEventBase<"paper.lifecycle.performance.updated", {
+  metrics: PaperPerformanceMetrics;
+  accountId: string;
+}>;
+
 export type OmegaEvent =
   // Existing events
   | MarketUpdateEvent
@@ -190,7 +262,19 @@ export type OmegaEvent =
   | SessionCancelledEvent
   // Cache events
   | CacheInvalidatedEvent
-  | CacheRefreshedEvent;
+  | CacheRefreshedEvent
+  // Signal flow pipeline events (Phase 8)
+  | SignalFlowStartedEvent
+  | SignalFlowStageCompletedEvent
+  | SignalFlowCompletedEvent
+  | SignalFlowFailedEvent
+  // Paper trading lifecycle events (Phase 8)
+  | PaperLifecycleOrderCreatedEvent
+  | PaperLifecycleOrderFilledEvent
+  | PaperLifecyclePositionOpenedEvent
+  | PaperLifecyclePositionClosedEvent
+  | PaperLifecycleJournalEntryEvent
+  | PaperLifecyclePerformanceUpdatedEvent;
 
 export type OmegaEventHandler<TEvent extends OmegaEvent = OmegaEvent> = (event: TEvent) => void;
 
