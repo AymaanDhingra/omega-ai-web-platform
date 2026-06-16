@@ -6,15 +6,9 @@
  */
 
 import { getDataSource } from "../../lib/data-sources";
-import type { DataSourceDescriptor } from "../../lib/data-sources";
 import type { NewsEvent } from "../../lib/types";
 import { getAdapterFactory } from "../../lib/adapter-factory";
-import { mockNewsAdapter } from "../news-adapter";
-
-export interface NewsAdapter {
-  source: DataSourceDescriptor;
-  getNews(): Promise<NewsEvent[]>;
-}
+import { mockNewsAdapter, type NewsAdapter } from "../news-adapter";
 
 /**
  * HTTP-based news adapter
@@ -25,10 +19,10 @@ export interface NewsAdapter {
 export const httpNewsAdapter: NewsAdapter = {
   source: getDataSource("rest"),
 
-  async getNews(): Promise<NewsEvent[]> {
+  async getNewsEvents(): Promise<NewsEvent[]> {
     const factory = getAdapterFactory();
     if (!factory.shouldUseHttp()) {
-      return mockNewsAdapter.getNews();
+      return mockNewsAdapter.getNewsEvents();
     }
 
     try {
@@ -38,7 +32,7 @@ export const httpNewsAdapter: NewsAdapter = {
     } catch (error) {
       if (factory.shouldUseMockFallback()) {
         console.warn("News HTTP request failed, falling back to mock", error);
-        return mockNewsAdapter.getNews();
+        return mockNewsAdapter.getNewsEvents();
       }
       throw error;
     }
