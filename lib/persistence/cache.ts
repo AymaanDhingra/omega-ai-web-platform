@@ -208,7 +208,7 @@ export class MockCache<T> implements Cache<T> {
   }
 
   async setMany(entries: Map<string, T>, ttlSeconds?: number): Promise<void> {
-    for (const [key, value] of entries) {
+    for (const [key, value] of Array.from(entries)) {
       await this.set(key, value, ttlSeconds);
     }
   }

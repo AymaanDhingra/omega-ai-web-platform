@@ -39,6 +39,10 @@ describe("Feature Flags", () => {
       expect(FEATURE_FLAGS.ENABLE_CACHE).toBe(true);
       expect(FEATURE_FLAGS.ENABLE_SESSIONS).toBe(true);
     });
+
+    it("should expose the current canonical feature flag set", () => {
+      expect(Object.keys(FEATURE_FLAGS)).toHaveLength(22);
+    });
   });
 
   describe("isFeatureEnabled", () => {

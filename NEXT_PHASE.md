@@ -78,6 +78,11 @@ Phase 12 should focus on Advanced Analytics after v1.0 is locally verified and t
 - If local verification passes, tag `v1.0.0`.
 - Start Phase 12 only after v1.0 is stable.
 
+## v1.0 Release Fix
+
+- Feature flag smoke test updated to the canonical 22-flag set.
+- Cache `setMany()` implementation updated for Map iteration compatibility without changing public contracts.
+
 ## Completed Phases
 
 ### Phase 1: Recovery
