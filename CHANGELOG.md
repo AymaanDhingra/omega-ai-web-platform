@@ -2,6 +2,25 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 11 Experience Engine Complete
+
+### Added
+
+- Added mock-first Experience Engine contracts: ExperienceRecord, ExperienceLesson, ExperiencePattern, ExperienceOutcome, ExperienceSnapshot, ExperienceCategory, ExperienceRepository, ExperienceSearch, ExperienceFilter, and ExperienceSummary.
+- Added experience feature flags: ENABLE_EXPERIENCE, ENABLE_EXPERIENCE_PATTERNS, and ENABLE_EXPERIENCE_KNOWLEDGE.
+- Added mock experience repository generated from paper trades, SignalFlow outcomes, analytics, TradingView observations, market intelligence context, and knowledge feedback.
+- Added mock pattern detection for winning setups, losing setups, market conditions, strategy behaviour, confidence patterns, and trading sessions.
+- Added knowledge update preparation from experience lessons without creating a duplicate knowledge system.
+- Added SignalFlow experience feedback helpers without creating a parallel decision pipeline.
+- Added `OMEGA_ARCHITECTURE.md` documenting the core loop and Experience Rule.
+- Added Experience Engine tests.
+
+### Verified
+
+- CI Status: Unavailable.
+- Reason: Infrastructure limitation.
+- Local verification: Pending in this remote API session.
+
 ## 2026-06-16 - Phase 7 Persistence Architecture Complete
 
 ### Added

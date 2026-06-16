@@ -29,6 +29,10 @@ export type FeatureFlagName =
   | "ENABLE_TRADINGVIEW_CHARTS"
   | "ENABLE_TRADINGVIEW_WATCHLISTS"
   | "ENABLE_TRADINGVIEW_VALIDATION"
+  // Experience Engine flags
+  | "ENABLE_EXPERIENCE"
+  | "ENABLE_EXPERIENCE_PATTERNS"
+  | "ENABLE_EXPERIENCE_KNOWLEDGE"
   // Persistence flags
   | "ENABLE_PERSISTENCE"
   | "ENABLE_CACHE"
@@ -328,4 +332,113 @@ export interface DashboardSnapshot {
   candles: [number, number, number, number][];
   analyticsGroups: AnalyticsGroup[];
   tradingViewTesting: TradingViewTestingSummary;
+}
+
+export type ExperienceCategory =
+  | "paper-trade"
+  | "paper-portfolio"
+  | "signalflow-outcome"
+  | "analytics"
+  | "tradingview-observation"
+  | "market-intelligence"
+  | "knowledge-feedback";
+
+export type ExperienceOutcome = "success" | "failure" | "neutral" | "inconclusive";
+
+export interface ExperienceLesson {
+  id: string;
+  title: string;
+  lesson: string;
+  confidence: number;
+  appliesTo: string[];
+  createdAt: string;
+}
+
+export interface ExperiencePattern {
+  id: string;
+  name: string;
+  category: "winning-setup" | "losing-setup" | "market-condition" | "strategy-behaviour" | "confidence-pattern" | "trading-session";
+  description: string;
+  occurrences: number;
+  confidence: number;
+  relatedExperienceIds: string[];
+  metadata: Record<string, unknown>;
+}
+
+export interface ExperienceRecord {
+  id: string;
+  category: ExperienceCategory;
+  source: string;
+  timestamp: string;
+  title: string;
+  summary: string;
+  outcome: ExperienceOutcome;
+  symbol?: string;
+  market?: string;
+  signalId?: string;
+  paperTradeId?: string;
+  analyticsRefs: string[];
+  tradingViewRefs: string[];
+  marketIntelligenceRefs: string[];
+  lessons: ExperienceLesson[];
+  patterns: string[];
+  confidence: number;
+  metadata: Record<string, unknown>;
+}
+
+export interface ExperienceSnapshot {
+  id: string;
+  timestamp: string;
+  records: ExperienceRecord[];
+  patterns: ExperiencePattern[];
+  lessons: ExperienceLesson[];
+  summary: string;
+  generatedBy: "mock-experience-engine";
+}
+
+export interface ExperienceFilter {
+  category?: ExperienceCategory;
+  outcome?: ExperienceOutcome;
+  symbol?: string;
+  market?: string;
+  minConfidence?: number;
+  patternId?: string;
+}
+
+export interface ExperienceSearch {
+  query?: string;
+  filter?: ExperienceFilter;
+  limit?: number;
+}
+
+export interface ExperienceSummary {
+  totalRecords: number;
+  successCount: number;
+  failureCount: number;
+  topPatterns: ExperiencePattern[];
+  keyLessons: ExperienceLesson[];
+  knowledgeUpdateSummary: string;
+}
+
+export interface ExperienceRepository {
+  listRecords(filter?: ExperienceFilter): Promise<ExperienceRecord[]>;
+  search(search: ExperienceSearch): Promise<ExperienceRecord[]>;
+  getRecord(id: string): Promise<ExperienceRecord | null>;
+  listLessons(): Promise<ExperienceLesson[]>;
+  listPatterns(): Promise<ExperiencePattern[]>;
+  detectPatterns(): Promise<ExperiencePattern[]>;
+  createSnapshot(): Promise<ExperienceSnapshot>;
+  summarize(): Promise<ExperienceSummary>;
+  prepareKnowledgeUpdates(): Promise<KnowledgeDocument[]>;
+}
+
+export interface ExperienceSignalFlowFeedback {
+  signalId: string;
+  symbol: string;
+  market: string;
+  experienceIds: string[];
+  patternIds: string[];
+  lessons: ExperienceLesson[];
+  reasoning: string;
+  appliedAt: string;
 }

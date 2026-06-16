@@ -4,6 +4,28 @@ Last updated: 2026-06-16
 
 This document describes the current architecture and the target architecture for the OMEGA AI platform. Current implementation is a modular multi-page frontend platform backed by typed API contracts, adapter interfaces, mock services, and mock fixtures. Backend, persistence, AI, data, TradingView, and trading integrations are planned boundaries, not active runtime modules yet.
 
+## OMEGA Core Loop
+
+```text
+Knowledge
+↓
+Market Intelligence
+↓
+AI
+↓
+SignalFlow
+↓
+Paper Trading
+↓
+Analytics
+↓
+Experience
+↓
+Knowledge
+```
+
+The Experience Engine closes the loop by converting paper trading outcomes into structured lessons, mock patterns, and knowledge updates. It does not train AI models and it does not create a parallel decision pipeline.
+
 ## Current Runtime Architecture
 
 ```mermaid

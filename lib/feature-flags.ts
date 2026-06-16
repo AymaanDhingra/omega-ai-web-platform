@@ -32,6 +32,11 @@ export const FEATURE_FLAGS: Record<FeatureFlagName, boolean> = {
   ENABLE_TRADINGVIEW_WATCHLISTS: false,
   ENABLE_TRADINGVIEW_VALIDATION: false,
   
+  // Experience Engine flags - mock enabled
+  ENABLE_EXPERIENCE: true,
+  ENABLE_EXPERIENCE_PATTERNS: true,
+  ENABLE_EXPERIENCE_KNOWLEDGE: true,
+  
   // Persistence flags - enabled for Phase 7
   ENABLE_PERSISTENCE: true,
   ENABLE_CACHE: true,

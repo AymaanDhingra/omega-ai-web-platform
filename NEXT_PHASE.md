@@ -1,8 +1,8 @@
 # OMEGA AI - Next Phase Planning
 
-## Current Status: Phase 7 Complete
+## Current Status: Phase 11 Complete
 
-**Phase**: 7 - Persistence Architecture
+**Phase**: 11 - Experience Engine
 **Status**: ✅ COMPLETE
 **Date**: 2026-06-16
 
@@ -41,6 +41,30 @@ flowchart LR
     Cache["Cache<T>"]
   end
 ```
+
+## Core Loop
+
+```text
+Knowledge
+↓
+Market Intelligence
+↓
+AI
+↓
+SignalFlow
+↓
+Paper Trading
+↓
+Analytics
+↓
+Experience
+↓
+Knowledge
+```
+
+## Recommended Next Phase
+
+Phase 12 should focus on Advanced Analytics: deeper mock analytics over SignalFlow outcomes, paper trading results, experience patterns, and knowledge update quality. Do not add live feeds, brokers, exchange APIs, external AI providers, or parallel decision systems.
 
 ## Completed Phases
 
