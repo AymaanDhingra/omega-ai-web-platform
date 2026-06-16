@@ -6,7 +6,7 @@
     "dev": "next dev -H 127.0.0.1 -p 3000",
     "build": "next build",
     "lint": "eslint .",
-    "test": "tsx --test tests/smoke.test.tsx tests/adapters.test.tsx tests/adapter-integration.test.tsx tests/http-client.test.tsx __tests__/feature-flags.test.ts __tests__/persistence/repository.test.ts __tests__/persistence/cache.test.ts"
+    "test": "tsx --test tests/smoke.test.tsx tests/adapters.test.tsx tests/adapter-integration.test.tsx tests/http-client.test.tsx __tests__/feature-flags.test.ts __tests__/persistence/repository.test.ts __tests__/persistence/cache.test.ts __tests__/signal-flow.test.ts"
   },
   "dependencies": {
     "lucide-react": "^1.20.0",

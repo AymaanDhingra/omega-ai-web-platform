@@ -50,6 +50,7 @@ import { TradingViewTestingModule } from "../components/modules/TradingViewTesti
 import { TradingViewFoundationModule } from "../components/modules/TradingViewFoundationModule";
 import { tradingViewFoundationMock } from "../lib/mock/tradingview-contracts";
 import { __setFeatureFlagForTest, getFeatureFlagState } from "../lib/feature-flags";
+import { createMockSignalFlowOrchestrator } from "../lib/mock/signal-flow";
 import { TradeCard } from "../components/trading/TradeCard";
 import { CURRENT_API_VERSION, createMockResponseMeta } from "../lib/contracts/backend";
 import { dataSources, getDataSource } from "../lib/data-sources";
@@ -127,8 +128,8 @@ test("module registry loads enriched OMEGA modules", async () => {
 test("feature flags expose all frontend module gates", () => {
   const flags = getFeatureFlagState();
 
-  // 13 core module flags + 4 TradingView flags + 3 persistence flags + 3 sub-layer flags = 23 total
-  assert.equal(Object.keys(flags).length, 23);
+  // 13 core + 4 TradingView + 3 persistence + 3 sub-layer + 3 Phase 8 = 26 total
+  assert.equal(Object.keys(flags).length, 26);
   assert.equal(flags.ENABLE_MARKETS, true);
   assert.equal(flags.ENABLE_AI, true);
   assert.equal(flags.ENABLE_SETTINGS, true);
@@ -386,6 +387,62 @@ test("TradingViewFoundationModule renders EmptyState when flag is off", () => {
   } finally {
     __setFeatureFlagForTest("ENABLE_TRADINGVIEW", false);
   }
+});
+
+test("signal flow orchestrator mock executes pipeline and returns valid result", async () => {
+  const orchestrator = createMockSignalFlowOrchestrator();
+
+  // executePipeline returns a valid result
+  const result = await orchestrator.executePipeline("BTCUSDT");
+  assert.ok(result.id);
+  assert.equal(result.symbol, "BTCUSDT");
+  assert.equal(result.status, "completed");
+  assert.equal(result.stages.length, 10);
+
+  // tradingview-validation is skipped by default
+  const tvStage = result.stages.find((s) => s.stage === "tradingview-validation");
+  assert.ok(tvStage);
+  assert.equal(tvStage.status, "skipped");
+
+  // history includes the executed pipeline
+  const history = orchestrator.getPipelineHistory();
+  assert.ok(history.length > 0);
+  const found = orchestrator.getPipelineById(result.id);
+  assert.ok(found);
+  assert.equal(found.id, result.id);
+
+  // cancel returns true for existing pipeline
+  assert.equal(orchestrator.cancelPipeline(result.id), true);
+  // cancel returns false for unknown id
+  assert.equal(orchestrator.cancelPipeline("non-existent"), false);
+});
+
+test("paper trading contract extensions are backward-compatible", async () => {
+  const state = await paperTradingApi.getPaperTradingState();
+  const accounts = await paperTradingApi.getPaperAccounts();
+  const orders = await paperTradingApi.getPaperOrders();
+  const positions = await paperTradingApi.getPaperPositions();
+  const journal = await paperTradingApi.getTradeJournal();
+  const performance = await paperTradingApi.getPerformanceMetrics();
+
+  // Existing required fields still present
+  assert.ok(accounts[0].id);
+  assert.ok(accounts[0].name);
+  assert.ok(accounts[0].currency);
+  assert.ok(accounts[0].status);
+  assert.ok(orders[0].id);
+  assert.ok(orders[0].accountId);
+  assert.ok(orders[0].createdAt);
+  assert.ok(positions[0].id);
+  assert.ok(positions[0].unrealizedPnl);
+  assert.ok(journal[0].thesis);
+  assert.ok(performance[0].winRate);
+  assert.ok(performance[0].totalTrades > 0);
+
+  // State shape is intact
+  assert.ok(state.accounts.length > 0);
+  assert.ok(state.orders.length > 0);
+  assert.ok(state.positions.length > 0);
 });
 
 test("TradingViewFoundationModule renders panels when flag is on", () => {

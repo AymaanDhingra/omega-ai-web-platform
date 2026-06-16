@@ -17,6 +17,9 @@ import {
   isRepositoriesEnabled,
   isHistoryEnabled,
   isSnapshotsEnabled,
+  isPaperLifecycleEnabled,
+  isSignalFlowEnabled,
+  isPaperAnalyticsEnabled,
   __setFeatureFlagForTest
 } from "../lib/feature-flags";
 
@@ -57,6 +60,12 @@ describe("Feature Flags", () => {
       assert.equal(FEATURE_FLAGS.ENABLE_HISTORY, true);
       assert.equal(FEATURE_FLAGS.ENABLE_SNAPSHOTS, true);
     });
+
+    it("should have Phase 8 paper trading lifecycle and signal flow flags enabled", () => {
+      assert.equal(FEATURE_FLAGS.ENABLE_PAPER_LIFECYCLE, true);
+      assert.equal(FEATURE_FLAGS.ENABLE_SIGNAL_FLOW, true);
+      assert.equal(FEATURE_FLAGS.ENABLE_PAPER_ANALYTICS, true);
+    });
   });
 
   describe("isFeatureEnabled", () => {
@@ -78,9 +87,9 @@ describe("Feature Flags", () => {
       assert.notEqual(state, FEATURE_FLAGS); // Should be a copy
     });
 
-    it("should include all 23 flags (13 core + 4 TradingView + 3 persistence + 3 sub-layer)", () => {
+    it("should include all 26 flags (13 core + 4 TradingView + 3 persistence + 3 sub-layer + 3 Phase 8)", () => {
       const state = getFeatureFlagState();
-      assert.equal(Object.keys(state).length, 23);
+      assert.equal(Object.keys(state).length, 26);
     });
   });
 
@@ -186,6 +195,51 @@ describe("Feature Flags", () => {
         assert.equal(isSnapshotsEnabled(), false);
       } finally {
         __setFeatureFlagForTest("ENABLE_SNAPSHOTS", true);
+      }
+    });
+  });
+
+  describe("isPaperLifecycleEnabled (new in Phase 8)", () => {
+    it("should return true by default", () => {
+      assert.equal(isPaperLifecycleEnabled(), true);
+    });
+
+    it("should reflect flag changes via __setFeatureFlagForTest", () => {
+      __setFeatureFlagForTest("ENABLE_PAPER_LIFECYCLE", false);
+      try {
+        assert.equal(isPaperLifecycleEnabled(), false);
+      } finally {
+        __setFeatureFlagForTest("ENABLE_PAPER_LIFECYCLE", true);
+      }
+    });
+  });
+
+  describe("isSignalFlowEnabled (new in Phase 8)", () => {
+    it("should return true by default", () => {
+      assert.equal(isSignalFlowEnabled(), true);
+    });
+
+    it("should reflect flag changes via __setFeatureFlagForTest", () => {
+      __setFeatureFlagForTest("ENABLE_SIGNAL_FLOW", false);
+      try {
+        assert.equal(isSignalFlowEnabled(), false);
+      } finally {
+        __setFeatureFlagForTest("ENABLE_SIGNAL_FLOW", true);
+      }
+    });
+  });
+
+  describe("isPaperAnalyticsEnabled (new in Phase 8)", () => {
+    it("should return true by default", () => {
+      assert.equal(isPaperAnalyticsEnabled(), true);
+    });
+
+    it("should reflect flag changes via __setFeatureFlagForTest", () => {
+      __setFeatureFlagForTest("ENABLE_PAPER_ANALYTICS", false);
+      try {
+        assert.equal(isPaperAnalyticsEnabled(), false);
+      } finally {
+        __setFeatureFlagForTest("ENABLE_PAPER_ANALYTICS", true);
       }
     });
   });
