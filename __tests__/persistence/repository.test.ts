@@ -1,4 +1,11 @@
-import { describe, it, expect, beforeEach } from "vitest";
+/**
+ * MockRepository Tests
+ *
+ * Uses node:test (tsx --test) to match the project's existing test runner.
+ * Previously used vitest; converted in Phase 7 Completion Pass to run in CI.
+ */
+import { describe, it, beforeEach } from "node:test";
+import assert from "node:assert/strict";
 import { MockRepository } from "../../lib/persistence/mock-repository";
 import type { Identifiable } from "../../lib/persistence/repository";
 
@@ -21,9 +28,9 @@ describe("MockRepository", () => {
       const entity: TestEntity = { id: "1", name: "Test", value: 100, category: "A" };
       const result = await repository.save(entity);
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data).toEqual(entity);
+        assert.deepEqual(result.data, entity);
       }
     });
 
@@ -32,9 +39,9 @@ describe("MockRepository", () => {
       await repository.save(entity);
       const result = await repository.save(entity);
 
-      expect(result.success).toBe(false);
+      assert.equal(result.success, false);
       if (!result.success) {
-        expect(result.error.code).toBe("DUPLICATE");
+        assert.equal(result.error.code, "DUPLICATE");
       }
     });
   });
@@ -45,18 +52,18 @@ describe("MockRepository", () => {
       await repository.save(entity);
       const result = await repository.find("1");
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data).toEqual(entity);
+        assert.deepEqual(result.data, entity);
       }
     });
 
     it("should return error for non-existent entity", async () => {
       const result = await repository.find("nonexistent");
 
-      expect(result.success).toBe(false);
+      assert.equal(result.success, false);
       if (!result.success) {
-        expect(result.error.code).toBe("NOT_FOUND");
+        assert.equal(result.error.code, "NOT_FOUND");
       }
     });
   });
@@ -67,19 +74,19 @@ describe("MockRepository", () => {
       await repository.save(entity);
       const result = await repository.update("1", { value: 200 });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.value).toBe(200);
-        expect(result.data.name).toBe("Test");
+        assert.equal(result.data.value, 200);
+        assert.equal(result.data.name, "Test");
       }
     });
 
     it("should return error for non-existent entity", async () => {
       const result = await repository.update("nonexistent", { value: 200 });
 
-      expect(result.success).toBe(false);
+      assert.equal(result.success, false);
       if (!result.success) {
-        expect(result.error.code).toBe("NOT_FOUND");
+        assert.equal(result.error.code, "NOT_FOUND");
       }
     });
   });
@@ -90,16 +97,16 @@ describe("MockRepository", () => {
       await repository.save(entity);
       const result = await repository.delete("1");
 
-      expect(result.success).toBe(true);
-      expect(await repository.exists("1")).toBe(false);
+      assert.equal(result.success, true);
+      assert.equal(await repository.exists("1"), false);
     });
 
     it("should return error for non-existent entity", async () => {
       const result = await repository.delete("nonexistent");
 
-      expect(result.success).toBe(false);
+      assert.equal(result.success, false);
       if (!result.success) {
-        expect(result.error.code).toBe("NOT_FOUND");
+        assert.equal(result.error.code, "NOT_FOUND");
       }
     });
   });
@@ -114,9 +121,9 @@ describe("MockRepository", () => {
     it("should return all entities without query", async () => {
       const result = await repository.findAll();
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.length).toBe(3);
+        assert.equal(result.data.length, 3);
       }
     });
 
@@ -125,10 +132,10 @@ describe("MockRepository", () => {
         filters: [{ field: "category", operator: "eq", value: "A" }]
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.length).toBe(2);
-        expect(result.data.every(e => e.category === "A")).toBe(true);
+        assert.equal(result.data.length, 2);
+        assert.ok(result.data.every(e => e.category === "A"));
       }
     });
 
@@ -137,9 +144,9 @@ describe("MockRepository", () => {
         filters: [{ field: "value", operator: "gt", value: 100 }]
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.length).toBe(2);
+        assert.equal(result.data.length, 2);
       }
     });
 
@@ -148,10 +155,10 @@ describe("MockRepository", () => {
         sort: { field: "value", direction: "asc" }
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data[0].value).toBe(100);
-        expect(result.data[2].value).toBe(200);
+        assert.equal(result.data[0].value, 100);
+        assert.equal(result.data[2].value, 200);
       }
     });
 
@@ -160,10 +167,10 @@ describe("MockRepository", () => {
         sort: { field: "value", direction: "desc" }
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data[0].value).toBe(200);
-        expect(result.data[2].value).toBe(100);
+        assert.equal(result.data[0].value, 200);
+        assert.equal(result.data[2].value, 100);
       }
     });
   });
@@ -180,13 +187,13 @@ describe("MockRepository", () => {
         pagination: { page: 1, pageSize: 10 }
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.items.length).toBe(10);
-        expect(result.data.total).toBe(25);
-        expect(result.data.totalPages).toBe(3);
-        expect(result.data.hasNext).toBe(true);
-        expect(result.data.hasPrevious).toBe(false);
+        assert.equal(result.data.items.length, 10);
+        assert.equal(result.data.total, 25);
+        assert.equal(result.data.totalPages, 3);
+        assert.equal(result.data.hasNext, true);
+        assert.equal(result.data.hasPrevious, false);
       }
     });
 
@@ -195,12 +202,12 @@ describe("MockRepository", () => {
         pagination: { page: 2, pageSize: 10 }
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.items.length).toBe(10);
-        expect(result.data.page).toBe(2);
-        expect(result.data.hasNext).toBe(true);
-        expect(result.data.hasPrevious).toBe(true);
+        assert.equal(result.data.items.length, 10);
+        assert.equal(result.data.page, 2);
+        assert.equal(result.data.hasNext, true);
+        assert.equal(result.data.hasPrevious, true);
       }
     });
 
@@ -209,11 +216,11 @@ describe("MockRepository", () => {
         pagination: { page: 3, pageSize: 10 }
       });
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.items.length).toBe(5);
-        expect(result.data.hasNext).toBe(false);
-        expect(result.data.hasPrevious).toBe(true);
+        assert.equal(result.data.items.length, 5);
+        assert.equal(result.data.hasNext, false);
+        assert.equal(result.data.hasPrevious, true);
       }
     });
   });
@@ -225,9 +232,9 @@ describe("MockRepository", () => {
       await repository.archive("1");
 
       const result = await repository.findAll();
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.length).toBe(0);
+        assert.equal(result.data.length, 0);
       }
     });
 
@@ -238,9 +245,9 @@ describe("MockRepository", () => {
       await repository.restore("1");
 
       const result = await repository.findAll();
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.length).toBe(1);
+        assert.equal(result.data.length, 1);
       }
     });
   });
@@ -251,12 +258,12 @@ describe("MockRepository", () => {
       await repository.save(entity);
       const result = await repository.snapshot("1");
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.entityId).toBe("1");
-        expect(result.data.entityType).toBe("TestEntity");
-        expect(result.data.data).toEqual(entity);
-        expect(result.data.version).toBe(1);
+        assert.equal(result.data.entityId, "1");
+        assert.equal(result.data.entityType, "TestEntity");
+        assert.deepEqual(result.data.data, entity);
+        assert.equal(result.data.version, 1);
       }
     });
 
@@ -266,9 +273,9 @@ describe("MockRepository", () => {
       await repository.snapshot("1");
       const result = await repository.snapshot("1");
 
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.version).toBe(2);
+        assert.equal(result.data.version, 2);
       }
     });
 
@@ -280,11 +287,11 @@ describe("MockRepository", () => {
       await repository.snapshot("1");
 
       const result = await repository.getSnapshots("1");
-      expect(result.success).toBe(true);
+      assert.equal(result.success, true);
       if (result.success) {
-        expect(result.data.length).toBe(2);
-        expect(result.data[0].data.value).toBe(100);
-        expect(result.data[1].data.value).toBe(200);
+        assert.equal(result.data.length, 2);
+        assert.equal(result.data[0].data.value, 100);
+        assert.equal(result.data[1].data.value, 200);
       }
     });
   });
@@ -294,8 +301,8 @@ describe("MockRepository", () => {
       const entity: TestEntity = { id: "1", name: "Test", value: 100, category: "A" };
       await repository.save(entity);
 
-      expect(await repository.exists("1")).toBe(true);
-      expect(await repository.exists("nonexistent")).toBe(false);
+      assert.equal(await repository.exists("1"), true);
+      assert.equal(await repository.exists("nonexistent"), false);
     });
 
     it("should count entities", async () => {
@@ -303,10 +310,10 @@ describe("MockRepository", () => {
       await repository.save({ id: "2", name: "B", value: 200, category: "B" });
       await repository.save({ id: "3", name: "C", value: 300, category: "A" });
 
-      expect(await repository.count()).toBe(3);
-      expect(await repository.count({
+      assert.equal(await repository.count(), 3);
+      assert.equal(await repository.count({
         filters: [{ field: "category", operator: "eq", value: "A" }]
-      })).toBe(2);
+      }), 2);
     });
   });
 });

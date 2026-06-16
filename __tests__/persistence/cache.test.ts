@@ -1,4 +1,11 @@
-import { describe, it, expect, beforeEach } from "vitest";
+/**
+ * MockCache Tests
+ *
+ * Uses node:test (tsx --test) to match the project's existing test runner.
+ * Previously used vitest; converted in Phase 7 Completion Pass to run in CI.
+ */
+import { describe, it, beforeEach } from "node:test";
+import assert from "node:assert/strict";
 import { MockCache } from "../../lib/persistence/cache";
 
 interface TestData {
@@ -19,27 +26,27 @@ describe("MockCache", () => {
       await cache.set("key1", data);
       const result = await cache.get("key1");
 
-      expect(result).toEqual(data);
+      assert.deepEqual(result, data);
     });
 
     it("should return null for non-existent key", async () => {
       const result = await cache.get("nonexistent");
-      expect(result).toBeNull();
+      assert.equal(result, null);
     });
 
     it("should delete a value", async () => {
       await cache.set("key1", { id: "1", value: 100 });
       const deleted = await cache.delete("key1");
 
-      expect(deleted).toBe(true);
-      expect(await cache.get("key1")).toBeNull();
+      assert.equal(deleted, true);
+      assert.equal(await cache.get("key1"), null);
     });
 
     it("should check if key exists", async () => {
       await cache.set("key1", { id: "1", value: 100 });
 
-      expect(await cache.has("key1")).toBe(true);
-      expect(await cache.has("nonexistent")).toBe(false);
+      assert.equal(await cache.has("key1"), true);
+      assert.equal(await cache.has("nonexistent"), false);
     });
 
     it("should clear all values", async () => {
@@ -47,7 +54,7 @@ describe("MockCache", () => {
       await cache.set("key2", { id: "2", value: 200 });
       await cache.clear();
 
-      expect(await cache.size()).toBe(0);
+      assert.equal(await cache.size(), 0);
     });
 
     it("should return all keys", async () => {
@@ -55,15 +62,15 @@ describe("MockCache", () => {
       await cache.set("key2", { id: "2", value: 200 });
 
       const keys = await cache.keys();
-      expect(keys).toContain("key1");
-      expect(keys).toContain("key2");
+      assert.ok(keys.includes("key1"));
+      assert.ok(keys.includes("key2"));
     });
 
     it("should return correct size", async () => {
       await cache.set("key1", { id: "1", value: 100 });
       await cache.set("key2", { id: "2", value: 200 });
 
-      expect(await cache.size()).toBe(2);
+      assert.equal(await cache.size(), 2);
     });
   });
 
@@ -75,9 +82,9 @@ describe("MockCache", () => {
 
       const result = await cache.getMany(["key1", "key3", "nonexistent"]);
 
-      expect(result.size).toBe(2);
-      expect(result.get("key1")).toEqual({ id: "1", value: 100 });
-      expect(result.get("key3")).toEqual({ id: "3", value: 300 });
+      assert.equal(result.size, 2);
+      assert.deepEqual(result.get("key1"), { id: "1", value: 100 });
+      assert.deepEqual(result.get("key3"), { id: "3", value: 300 });
     });
 
     it("should set many values", async () => {
@@ -88,8 +95,8 @@ describe("MockCache", () => {
 
       await cache.setMany(entries);
 
-      expect(await cache.get("key1")).toEqual({ id: "1", value: 100 });
-      expect(await cache.get("key2")).toEqual({ id: "2", value: 200 });
+      assert.deepEqual(await cache.get("key1"), { id: "1", value: 100 });
+      assert.deepEqual(await cache.get("key2"), { id: "2", value: 200 });
     });
   });
 
@@ -102,9 +109,10 @@ describe("MockCache", () => {
       await cache.get("nonexistent"); // miss
 
       const stats = cache.getStats();
-      expect(stats.hits).toBe(2);
-      expect(stats.misses).toBe(1);
-      expect(stats.hitRate).toBeCloseTo(0.667, 2);
+      assert.equal(stats.hits, 2);
+      assert.equal(stats.misses, 1);
+      // hitRate = 2/3 ≈ 0.667
+      assert.ok(Math.abs(stats.hitRate - 0.667) < 0.01);
     });
   });
 });

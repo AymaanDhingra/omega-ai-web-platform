@@ -25,17 +25,45 @@ export const FEATURE_FLAGS: Record<FeatureFlagName, boolean> = {
   ENABLE_NEWS: true,
   ENABLE_ADMIN: true,
   ENABLE_SETTINGS: true,
-  
-  // TradingView flags - OPTIONAL, default to false
-  // OMEGA functions completely without TradingView
+
+  /**
+   * ENABLE_TRADINGVIEW — umbrella flag for all TradingView integration.
+   * Gates the mock-only TradingView Foundation module and any future
+   * TradingView provider contracts. Defaults to false; OMEGA functions
+   * completely without TradingView.
+   */
+  ENABLE_TRADINGVIEW: false,
+
+  // TradingView granular flags - OPTIONAL, default to false
+  // Preserved for backward compatibility with existing callers.
+  // OMEGA functions completely without TradingView.
   ENABLE_TRADINGVIEW_CHARTS: false,
   ENABLE_TRADINGVIEW_WATCHLISTS: false,
   ENABLE_TRADINGVIEW_VALIDATION: false,
-  
+
   // Persistence flags - enabled for Phase 7
   ENABLE_PERSISTENCE: true,
   ENABLE_CACHE: true,
-  ENABLE_SESSIONS: true
+  ENABLE_SESSIONS: true,
+
+  /**
+   * ENABLE_REPOSITORIES — gates the domain-specific Repository<T> contract
+   * layer in lib/persistence/repositories.ts. Mock-only contract layer;
+   * no real database is connected.
+   */
+  ENABLE_REPOSITORIES: true,
+
+  /**
+   * ENABLE_HISTORY — gates the domain-specific history/audit-trail models
+   * in lib/persistence/history.ts. Mock-only contract layer.
+   */
+  ENABLE_HISTORY: true,
+
+  /**
+   * ENABLE_SNAPSHOTS — gates the domain-specific snapshot contracts in
+   * lib/persistence/snapshots.ts. Mock-only contract layer.
+   */
+  ENABLE_SNAPSHOTS: true,
 };
 
 export function isFeatureEnabled(flag: FeatureFlagName): boolean {
@@ -47,11 +75,14 @@ export function getFeatureFlagState(): Record<FeatureFlagName, boolean> {
 }
 
 /**
- * Check if TradingView integration is available
- * Returns true only if at least one TradingView feature is enabled
+ * Check if TradingView integration is available.
+ * Returns true when the umbrella flag OR any granular TradingView flag is enabled.
+ * Backward-compatible: existing callers that relied on the granular flags continue
+ * to work unchanged.
  */
 export function isTradingViewEnabled(): boolean {
   return (
+    FEATURE_FLAGS.ENABLE_TRADINGVIEW ||
     FEATURE_FLAGS.ENABLE_TRADINGVIEW_CHARTS ||
     FEATURE_FLAGS.ENABLE_TRADINGVIEW_WATCHLISTS ||
     FEATURE_FLAGS.ENABLE_TRADINGVIEW_VALIDATION
@@ -77,4 +108,41 @@ export function isCacheEnabled(): boolean {
  */
 export function isSessionsEnabled(): boolean {
   return FEATURE_FLAGS.ENABLE_SESSIONS;
+}
+
+/**
+ * Check if the domain-specific Repository<T> contract layer is available.
+ * Gates lib/persistence/repositories.ts — mock-only contract layer.
+ */
+export function isRepositoriesEnabled(): boolean {
+  return FEATURE_FLAGS.ENABLE_REPOSITORIES;
+}
+
+/**
+ * Check if the domain-specific history/audit-trail models are available.
+ * Gates lib/persistence/history.ts — mock-only contract layer.
+ */
+export function isHistoryEnabled(): boolean {
+  return FEATURE_FLAGS.ENABLE_HISTORY;
+}
+
+/**
+ * Check if the domain-specific snapshot contracts are available.
+ * Gates lib/persistence/snapshots.ts — mock-only contract layer.
+ */
+export function isSnapshotsEnabled(): boolean {
+  return FEATURE_FLAGS.ENABLE_SNAPSHOTS;
+}
+
+/**
+ * Test-only: override a single feature flag value.
+ * MUST be used inside a try/finally block to restore state.
+ * Never call this in production code.
+ *
+ * @example
+ * __setFeatureFlagForTest("ENABLE_TRADINGVIEW", true);
+ * try { ... } finally { __setFeatureFlagForTest("ENABLE_TRADINGVIEW", false); }
+ */
+export function __setFeatureFlagForTest(flag: FeatureFlagName, value: boolean): void {
+  FEATURE_FLAGS[flag] = value;
 }

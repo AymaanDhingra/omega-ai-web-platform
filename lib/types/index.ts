@@ -6,7 +6,7 @@ export type Direction = "Long" | "Short";
 
 export type MetricTone = "up" | "down" | "flat" | "warn" | "ok";
 
-export type ModuleStatus = "active" | "mock" | "planned" | "locked";
+export type ModuleStatus = "active" | "mock" | "planned" | "locked" | "placeholder";
 
 export type SystemHealthState = "Online" | "Offline" | "Mock" | "Locked";
 
@@ -26,13 +26,19 @@ export type FeatureFlagName =
   | "ENABLE_ADMIN"
   | "ENABLE_SETTINGS"
   // TradingView flags (optional - OMEGA functions without TradingView)
+  // ENABLE_TRADINGVIEW is the umbrella flag; granular flags remain for backward compatibility
+  | "ENABLE_TRADINGVIEW"
   | "ENABLE_TRADINGVIEW_CHARTS"
   | "ENABLE_TRADINGVIEW_WATCHLISTS"
   | "ENABLE_TRADINGVIEW_VALIDATION"
   // Persistence flags
   | "ENABLE_PERSISTENCE"
   | "ENABLE_CACHE"
-  | "ENABLE_SESSIONS";
+  | "ENABLE_SESSIONS"
+  // Persistence sub-layer flags (Phase 7 gap-closure)
+  | "ENABLE_REPOSITORIES"
+  | "ENABLE_HISTORY"
+  | "ENABLE_SNAPSHOTS";
 
 export type OmegaIcon =
   | "activity"
