@@ -6,15 +6,10 @@
  */
 
 import { getDataSource } from "../../lib/data-sources";
-import type { DataSourceDescriptor } from "../../lib/data-sources";
 import type { AnalyticsGroup } from "../../lib/types";
+import type { AnalyticsModelSet } from "../../lib/contracts/analytics";
 import { getAdapterFactory } from "../../lib/adapter-factory";
-import { mockAnalyticsAdapter } from "../analytics-adapter";
-
-export interface AnalyticsAdapter {
-  source: DataSourceDescriptor;
-  getAnalytics(): Promise<AnalyticsGroup[]>;
-}
+import { mockAnalyticsAdapter, type AnalyticsAdapter } from "../analytics-adapter";
 
 /**
  * HTTP-based analytics adapter
@@ -25,10 +20,10 @@ export interface AnalyticsAdapter {
 export const httpAnalyticsAdapter: AnalyticsAdapter = {
   source: getDataSource("rest"),
 
-  async getAnalytics(): Promise<AnalyticsGroup[]> {
+  async getAnalyticsGroups(): Promise<AnalyticsGroup[]> {
     const factory = getAdapterFactory();
     if (!factory.shouldUseHttp()) {
-      return mockAnalyticsAdapter.getAnalytics();
+      return mockAnalyticsAdapter.getAnalyticsGroups();
     }
 
     try {
@@ -38,7 +33,25 @@ export const httpAnalyticsAdapter: AnalyticsAdapter = {
     } catch (error) {
       if (factory.shouldUseMockFallback()) {
         console.warn("Analytics HTTP request failed, falling back to mock", error);
-        return mockAnalyticsAdapter.getAnalytics();
+        return mockAnalyticsAdapter.getAnalyticsGroups();
+      }
+      throw error;
+    }
+  },
+
+  async getAnalyticsModelSet(): Promise<AnalyticsModelSet> {
+    const factory = getAdapterFactory();
+    if (!factory.shouldUseHttp()) {
+      return mockAnalyticsAdapter.getAnalyticsModelSet();
+    }
+
+    try {
+      const client = factory.createHttpClient();
+      return await client.get<AnalyticsModelSet>("/api/v1/analytics/models");
+    } catch (error) {
+      if (factory.shouldUseMockFallback()) {
+        console.warn("Analytics models HTTP request failed, falling back to mock", error);
+        return mockAnalyticsAdapter.getAnalyticsModelSet();
       }
       throw error;
     }
