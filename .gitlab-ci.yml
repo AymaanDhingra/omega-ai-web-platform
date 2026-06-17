@@ -23,7 +23,7 @@ variables:
 cache:
   key:
     files:
-      - package-lock.json
+      - package.json
   paths:
     - .npm/
     - node_modules/
@@ -32,7 +32,7 @@ cache:
 install:dependencies:
   stage: install
   script:
-    - npm ci --cache .npm --prefer-offline
+    - npm install --cache .npm --prefer-offline
   artifacts:
     paths:
       - node_modules/
