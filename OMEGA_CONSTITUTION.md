@@ -50,6 +50,28 @@ Omega AI is an autonomous multi-market trading intelligence platform designed to
 - AI accuracy is tracked and improved
 - User feedback is incorporated
 
+## Core Feedback Loop
+
+```text
+Knowledge
+↓
+Market Intelligence
+↓
+AI
+↓
+SignalFlow
+↓
+Paper Trading
+↓
+Analytics
+↓
+Experience
+↓
+Knowledge
+```
+
+Every new feature must strengthen the OMEGA feedback loop. Parallel decision systems are prohibited. SignalFlow remains the central orchestration system.
+
 ## Architecture Layers
 
 ### 1. Domain Layer

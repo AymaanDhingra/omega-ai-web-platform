@@ -29,6 +29,10 @@ export type FeatureFlagName =
   | "ENABLE_TRADINGVIEW_CHARTS"
   | "ENABLE_TRADINGVIEW_WATCHLISTS"
   | "ENABLE_TRADINGVIEW_VALIDATION"
+  // Advanced Analytics flags
+  | "ENABLE_ADVANCED_ANALYTICS"
+  | "ENABLE_ANALYTICS_PATTERNS"
+  | "ENABLE_ANALYTICS_INSIGHTS"
   // Persistence flags
   | "ENABLE_PERSISTENCE"
   | "ENABLE_CACHE"
@@ -328,4 +332,97 @@ export interface DashboardSnapshot {
   candles: [number, number, number, number][];
   analyticsGroups: AnalyticsGroup[];
   tradingViewTesting: TradingViewTestingSummary;
+}
+
+export type AnalyticsInputSource = "paper-trading" | "signalflow" | "experience" | "knowledge" | "market-intelligence" | "tradingview";
+
+export interface AnalyticsInsight {
+  id: string;
+  title: string;
+  description: string;
+  source: AnalyticsInputSource;
+  confidence: number;
+  impact: "high" | "medium" | "low";
+  createdAt: string;
+  metadata: Record<string, unknown>;
+}
+
+export interface AnalyticsPattern {
+  id: string;
+  name: string;
+  category: "strategy-performance" | "signal-quality" | "win-loss" | "confidence" | "market-condition" | "experience-effectiveness" | "knowledge-contribution";
+  description: string;
+  occurrences: number;
+  confidence: number;
+  sources: AnalyticsInputSource[];
+  metadata: Record<string, unknown>;
+}
+
+export interface AnalyticsTrend {
+  id: string;
+  metric: string;
+  direction: "improving" | "declining" | "stable";
+  value: string;
+  period: string;
+  confidence: number;
+  metadata: Record<string, unknown>;
+}
+
+export interface AnalyticsRisk {
+  id: string;
+  title: string;
+  description: string;
+  severity: "critical" | "high" | "medium" | "low";
+  probability: number;
+  relatedPatterns: string[];
+  mitigation: string[];
+}
+
+export interface AnalyticsOpportunity {
+  id: string;
+  title: string;
+  description: string;
+  potential: number;
+  relatedPatterns: string[];
+  requirements: string[];
+}
+
+export interface AnalyticsSummary {
+  id: string;
+  generatedAt: string;
+  summary: string;
+  insights: AnalyticsInsight[];
+  patterns: AnalyticsPattern[];
+  trends: AnalyticsTrend[];
+  risks: AnalyticsRisk[];
+  opportunities: AnalyticsOpportunity[];
+  nextActions: string[];
+}
+
+export interface AnalyticsSnapshot {
+  id: string;
+  timestamp: string;
+  groups: AnalyticsGroup[];
+  summary: AnalyticsSummary;
+  sourceCount: Record<AnalyticsInputSource, number>;
+  generatedBy: "mock-advanced-analytics";
+}
+
+export interface AdvancedAnalyticsRepository {
+  getInsights(): Promise<AnalyticsInsight[]>;
+  getPatterns(): Promise<AnalyticsPattern[]>;
+  getTrends(): Promise<AnalyticsTrend[]>;
+  getRisks(): Promise<AnalyticsRisk[]>;
+  getOpportunities(): Promise<AnalyticsOpportunity[]>;
+  summarize(): Promise<AnalyticsSummary>;
+  createSnapshot(): Promise<AnalyticsSnapshot>;
+}
+
+export interface AnalyticsSignalFlowContext {
+  signalId: string;
+  symbol: string;
+  insightIds: string[];
+  patternIds: string[];
+  reasoning: string;
+  appliedAt: string;
 }

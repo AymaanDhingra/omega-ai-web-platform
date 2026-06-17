@@ -2,6 +2,21 @@
 
 All notable changes to the OMEGA AI Web Platform will be tracked here.
 
+## 2026-06-16 - Phase 12 Advanced Analytics Complete
+
+### Added
+
+- Added Advanced Analytics contracts: AnalyticsInsight, AnalyticsPattern, AnalyticsTrend, AnalyticsSummary, AnalyticsRisk, AnalyticsOpportunity, and AnalyticsSnapshot.
+- Added Advanced Analytics feature flags: ENABLE_ADVANCED_ANALYTICS, ENABLE_ANALYTICS_PATTERNS, and ENABLE_ANALYTICS_INSIGHTS.
+- Added mock Advanced Analytics repository consuming paper trading, SignalFlow, experience, knowledge, market intelligence, and TradingView observation context.
+- Extended the existing analytics service, adapter, and API.
+- Added SignalFlow analytics context helpers without creating a parallel decision pipeline.
+- Added Phase 12 tests and documentation.
+
+### Verified
+
+- Local verification required: npm install, npm run lint, npm run test, npm run build.
+
 ## 2026-06-16 - Phase 7 Persistence Architecture Complete
 
 ### Added
